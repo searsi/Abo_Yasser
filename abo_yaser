@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محل أبو ياسر - نظام إدارة الصيانات والفواتير</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-main);
+        }
+
+        .container { max-width: 950px; margin: 0 auto; }
+
+        #login-section {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            max-width: 400px;
+            margin: 80px auto;
+            text-align: center;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 20px 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            display: inline-block;
+        }
+
+        .status-dot.online { background-color: var(--success); box-shadow: 0 0 8px rgba(22, 163, 74, 0.5); }
+        .status-dot.offline { background-color: var(--danger); box-shadow: 0 0 8px rgba(220, 38, 38, 0.5); }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-box {
+            background: var(--card-bg);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            border: 1px solid #f1f5f9;
+            text-align: center;
+        }
+        .stat-box h4 { margin: 0; font-size: 13px; color: #64748b; }
+        .stat-box p { margin: 8px 0 0; font-size: 20px; font-weight: 700; color: var(--primary); }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            margin-bottom: 25px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: var(--primary);
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; text-align: right; }
+
+        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; color: #475569; }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            box-sizing: border-box;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+
+        .quick-models {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .badge-model {
+            background: #e2e8f0;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            color: #475569;
+            width: auto;
+        }
+        .badge-model:hover { background: var(--primary); color: white; }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            width: 100%;
+        }
+        button:hover { background: var(--primary-dark); }
+
+        .btn-danger { background: var(--danger); width: auto; padding: 8px 16px; font-size: 13px; }
+        .btn-secondary { background: #64748b; width: auto; }
+        .btn-secondary:hover { background: #475569; }
+
+        .hidden { display: none !important; }
+
+        /* نافذة التعديل المنبثقة (Modal) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+        .modal-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 25px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-right: 4px solid var(--primary);
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 12px;
+            text-align: right;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .result-card:hover { transform: translateY(-2px); box-shadow: 0 6px 15px -3px rgba(0,0,0,0.05); }
+        .result-card p { margin: 6px 0; font-size: 14px; }
+
+        .invoice-badge {
+            background: #e0f2fe;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .card-top-actions {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.2s;
+        }
+
+        .icon-btn.edit:hover { background: #fef3c7; border-color: var(--warning); color: var(--warning); }
+        .icon-btn.delete:hover { background: #fee2e2; border-color: var(--danger); color: var(--danger); }
+        .icon-btn.print:hover { background: #e0f2fe; border-color: var(--primary); color: var(--primary); }
+        .icon-btn.whatsapp:hover { background: #dcfce7; border-color: var(--success); color: var(--success); }
+
+        .active-warranty { color: var(--success); font-weight: 700; background: #dcfce7; padding: 3px 8px; border-radius: 6px; display: inline-block;}
+        .expired-warranty { color: var(--danger); font-weight: 700; background: #fee2e2; padding: 3px 8px; border-radius: 6px; display: inline-block;}
+        .error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- تسجيل الدخول -->
+    <div id="login-section">
+        <h2>🔧 محل أبو ياسر</h2>
+        <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">تسجيل دخول لوحة التحكم</p>
+        <div class="form-group">
+            <label>اسم المستخدم</label>
+            <input type="text" id="username" placeholder="أدخل اسم المستخدم...">
+        </div>
+        <div class="form-group">
+            <label>كلمة المرور</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+        <button onclick="checkLogin()">دخول للنظام</button>
+        <p id="login-error" class="error-msg"></p>
+    </div>
+
+    <!-- لوحة التحكم -->
+    <div id="dashboard-section" class="hidden">
+        <div class="dashboard-header">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <h2 style="margin: 0;">🚗 نظام إدارة الصيانات والفواتير</h2>
+                <div class="connection-status">
+                    <span id="status-dot" class="status-dot"></span>
+                    <span id="status-text">جاري الاتصال...</span>
+                </div>
+            </div>
+            <button class="btn-danger" onclick="logout()">تسجيل خروج</button>
+        </div>
+
+        <!-- شريط الإحصائيات -->
+        <div class="stats-bar">
+            <div class="stat-box">
+                <h4>إجمالي الإيرادات</h4>
+                <p id="stat-total-revenue">0 د.ع</p>
+            </div>
+            <div class="stat-box">
+                <h4>إجمالي الفواتير</h4>
+                <p id="stat-total-count">0</p>
+            </div>
+            <div class="stat-box">
+                <h4>ضمانات منتهية</h4>
+                <p id="stat-expired-count" style="color: var(--danger);">0</p>
+            </div>
+        </div>
+        
+        <!-- الإدخال -->
+        <div class="card">
+            <h3>➕ تسجيل صيانة وإصدار فاتورة جديدة</h3>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>رقم السيارة</label>
+                    <input type="text" id="carNumber" placeholder="مثلاً: ز 2024156 أو 24A20142">
+                </div>
+                <div class="form-group">
+                    <label>نوع السيارة (الموديل)</label>
+                    <input type="text" id="carModel" placeholder="اكتب أو اختر من الأسفل...">
+                    <div class="quick-models">
+                        <button type="button" class="badge-model" onclick="setModel('أكسنت')">أكسنت</button>
+                        <button type="button" class="badge-model" onclick="setModel('بي واي دي')">بي واي دي</button>
+                        <button type="button" class="badge-model" onclick="setModel('سني')">سني</button>
+                        <button type="button" class="badge-model" onclick="setModel('إلنترا')">إلنترا</button>
+                        <button type="button" class="badge-model" onclick="setModel('ريو')">ريو</button>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>اسم العميل</label>
+                    <input type="text" id="customerInfo" placeholder="اسم الزبون...">
+                </div>
+                <div class="form-group">
+                    <label>رقم هاتف العميل (للإشعارات والواتساب)</label>
+                    <input type="text" id="customerPhone" placeholder="07700000000">
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>نوع التصليح</label>
+                    <input type="text" id="repairType" placeholder="تبديل فيت بَم...">
+                </div>
+                <div class="form-group">
+                    <label>تكلفة الصيانة (د.ع)</label>
+                    <input type="text" id="repairPrice" placeholder="مثلاً: 50,000" oninput="formatPriceInput(this)">
+                </div>
+            </div>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>تاريخ الصيانة</label>
+                    <input type="date" id="maintenanceDateInput">
+                </div>
+                <div class="form-group">
+                    <label>مدة الضمان (بالأيام)</label>
+                    <input type="number" id="warrantyDays" value="30">
+                </div>
+            </div>
+            <button onclick="saveMaintenance()" style="margin-top: 10px;">💾 حفظ الفاتورة أونلاين</button>
+            <p id="save-status" style="margin-top: 10px; font-weight: bold;"></p>
+        </div>
+
+        <!-- البحث والتزامن المباشر -->
+        <div class="card" id="search-card-wrapper">
+            <h3>🔍 البحث السريع عن السجلات</h3>
+            <div class="form-group">
+                <label>ابحث برقم الفاتورة، رقم السيارة، الموديل، اسم العميل، أو الهاتف:</label>
+                <input type="text" id="searchCarNumber" placeholder="اكتب رقم الفاتورة (مثلاً 1001) أو رقم السيارة للبحث..." oninput="filterRecords()">
+            </div>
+            <!-- الحاوية لعرض السجلات -->
+            <div id="live-records-container" style="margin-top: 15px;">
+                <p style="color: var(--primary);">جاري جلب وتزامن البيانات من قاعدة البيانات...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة تعديل الفاتورة المنبثقة (Modal) -->
+<div id="edit-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+        <h3 style="color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-top: 0;">✏️ تعديل تفاصيل الفاتورة رقم <span id="modal-inv-label"></span></h3>
+        <input type="hidden" id="edit-id">
+        
+        <div class="grid-2">
+            <div class="form-group">
+                <label>رقم السيارة</label>
+                <input type="text" id="edit-carNumber">
+            </div>
+            <div class="form-group">
+                <label>نوع السيارة (الموديل)</label>
+                <input type="text" id="edit-carModel">
+            </div>
+        </div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label>اسم العميل</label>
+                <input type="text" id="edit-customerInfo">
+            </div>
+            <div class="form-group">
+                <label>رقم هاتف العميل</label>
+                <input type="text" id="edit-customerPhone">
+            </div>
+        </div>
+        <div class="grid-2">
+            <div class="form-group">
+                <label>نوع التصليح</label>
+                <input type="text" id="edit-repairType">
+            </div>
+            <div class="form-group">
+                <label>تكلفة الصيانة (د.ع)</label>
+                <input type="text" id="edit-repairPrice" oninput="formatPriceInput(this)">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>مدة الضمان (بالأيام)</label>
+            <input type="number" id="edit-warrantyDays">
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button onclick="saveEditedRecord()" style="flex: 1;">💾 حفظ التعديلات</button>
+            <button class="btn-secondary" onclick="closeEditModal()" style="flex: 1;">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, push, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCCm4vLBSUj8Jqchyq9sAlHxif8SLwbluU",
+        authDomain: "abu-yasser-workshop.firebaseapp.com",
+        databaseURL: "https://abu-yasser-workshop-default-rtdb.firebaseio.com",
+        projectId: "abu-yasser-workshop",
+        storageBucket: "abu-yasser-workshop.appspot.com",
+        messagingSenderId: "96900913510",
+        appId: "1:96900913510:web:bcf30b6f7f76c7c4f710a7",
+        measurementId: "G-C7H6NVPT6T"
+    };
+
+    let db;
+    let allMaintenancesData = [];
+
+    try {
+        const app = initializeApp(firebaseConfig);
+        db = getDatabase(app);
+        initConnectionMonitor(db);
+    } catch (err) {
+        console.error("Firebase Initialization Error:", err);
+    }
+
+    function initConnectionMonitor(database) {
+        const connectedRef = ref(database, ".info/connected");
+        const statusDot = document.getElementById("status-dot");
+        const statusText = document.getElementById("status-text");
+
+        onValue(connectedRef, (snap) => {
+            if (snap.val() === true) {
+                statusDot.className = "status-dot online";
+                statusText.innerText = "متصل أونلاين (متزامن)";
+            } else {
+                statusDot.className = "status-dot offline";
+                statusText.innerText = "مقطوع / جاري إعادة الاتصال...";
+            }
+        });
+    }
+
+    const ADMIN_USER = "admin";
+    const ADMIN_PASS = "123456";
+
+    window.onload = function() {
+        const todayStr = new Date().toISOString().split('T')[0];
+        const dateInput = document.getElementById('maintenanceDateInput');
+        if(dateInput) dateInput.value = todayStr;
+
+        logout();
+    }
+
+    // دالة تنسيق الفوارز التلقائية أثناء الكتابة
+    window.formatPriceInput = function(inputElement) {
+        let value = inputElement.value.replace(/[^\d]/g, '');
+        if (value) {
+            inputElement.value = Number(value).toLocaleString();
+        } else {
+            inputElement.value = '';
+        }
+    }
+
+    window.setModel = function(modelName) {
+        document.getElementById('carModel').value = modelName;
+    }
+
+    window.checkLogin = function() {
+        const userInput = document.getElementById('username').value.trim();
+        const passInput = document.getElementById('password').value;
+        
+        if (userInput === ADMIN_USER && passInput === ADMIN_PASS) {
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('login-error').innerText = '';
+            showDashboard();
+        } else {
+            document.getElementById('login-error').innerText = "خطأ في اسم المستخدم أو كلمة المرور!";
+        }
+    }
+
+    window.logout = function() {
+        document.getElementById('login-section').classList.remove('hidden');
+        document.getElementById('dashboard-section').classList.add('hidden');
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('login-error').innerText = '';
+    }
+
+    function showDashboard() {
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('dashboard-section').classList.remove('hidden');
+        startRealtimeSync();
+    }
+
+    function startRealtimeSync() {
+        const dbRef = ref(db, 'maintenances');
+        
+        onValue(dbRef, (snapshot) => {
+            allMaintenancesData = [];
+            
+            if (snapshot.exists()) {
+                snapshot.forEach((childSnapshot) => {
+                    allMaintenancesData.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+                allMaintenancesData.sort((a, b) => (b.invoiceNumber || 0) - (a.invoiceNumber || 0));
+            }
+            
+            updateStats(allMaintenancesData);
+            renderRecords(allMaintenancesData);
+        }, (error) => {
+            console.error("Sync Error:", error);
+            document.getElementById('live-records-container').innerHTML = '<p class="error-msg">خطأ في مزامنة البيانات.</p>';
+        });
+    }
+
+    function updateStats(dataList) {
+        let totalRevenue = 0;
+        let expiredCount = 0;
+        const today = new Date();
+
+        dataList.forEach(item => {
+            const cleanPrice = typeof item.repairPrice === 'string' ? item.repairPrice.replace(/,/g, '') : item.repairPrice;
+            totalRevenue += parseFloat(cleanPrice) || 0;
+            const eDateObj = new Date(item.expiryDate);
+            if (today > eDateObj) {
+                expiredCount++;
+            }
+        });
+
+        document.getElementById('stat-total-revenue').innerText = totalRevenue.toLocaleString() + " د.ع";
+        document.getElementById('stat-total-count').innerText = dataList.length;
+        document.getElementById('stat-expired-count').innerText = expiredCount;
+    }
+
+    function renderRecords(dataList) {
+        const container = document.getElementById('live-records-container');
+
+        if (dataList.length === 0) {
+            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 15px;">لا توجد أي فواتير مسجلة حتى الآن.</p>';
+            return;
+        }
+
+        let html = '';
+        const today = new Date();
+
+        dataList.forEach((data) => {
+            const mDateObj = new Date(data.maintenanceDate);
+            const eDateObj = new Date(data.expiryDate);
+            
+            const mDateFormatted = mDateObj.toLocaleDateString('ar-IQ');
+            const eDateFormatted = eDateObj.toLocaleDateString('ar-IQ');
+            
+            const isExpired = today > eDateObj;
+            const diffTime = eDateObj - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            const carModelText = data.carModel ? `(${data.carModel})` : '';
+            const customerPhone = data.customerPhone ? data.customerPhone : '';
+            const invNum = data.invoiceNumber || 'غير محدد';
+            const warrantyDays = parseInt(data.warrantyDays) || 0;
+            
+            const cleanPriceVal = typeof data.repairPrice === 'string' ? data.repairPrice.replace(/,/g, '') : data.repairPrice;
+            const formattedPriceDisplay = Number(cleanPriceVal || 0).toLocaleString();
+
+            const whatsappMsg = encodeURIComponent(`مرحباً أستاذ ${data.customerInfo || 'العزيز'}، بخصوص فاتورتك رقم (${invNum}) لسيارتك (${data.carNumber} - ${data.carModel || ''}) التي تم تصليحها لدينا (${data.repairType}).`);
+            const whatsappUrl = data.customerPhone ? `https://wa.me/964${data.customerPhone.replace(/^0+/, '')}?text=${whatsappMsg}` : '#';
+
+            html += `<div class="result-card" id="card-${data.id}">
+                <div class="card-top-actions">`;
+            
+            if (data.customerPhone) {
+                html += `<a href="${whatsappUrl}" target="_blank" class="icon-btn whatsapp" title="مراسلة عبر واتساب">📱</a>`;
+            }
+
+            html += `
+                    <button class="icon-btn print" title="طباعة وصل" onclick="printReceipt('${invNum}', '${data.carNumber}', '${data.carModel || ''}', '${data.customerInfo || ''}', '${data.repairType}', '${cleanPriceVal}', '${mDateFormatted}', '${eDateFormatted}', '${warrantyDays}')">🖨️</button>
+                    <button class="icon-btn edit" title="تعديل السجل" onclick="openEditModal('${data.id}')">✏️</button>
+                    <button class="icon-btn delete" title="حذف السجل" onclick="deleteRecord('${data.id}')">🗑️</button>
+                </div>
+
+                <div class="invoice-badge">📄 رقم الفاتورة: #${invNum}</div>
+                <p style="font-size: 16px; color: var(--primary);"><strong>رقم السيارة:</strong> ${data.carNumber} <span style="color: #64748b; font-weight: 600;">${carModelText}</span></p>
+                <p><strong>اسم العميل:</strong> ${data.customerInfo} ${customerPhone ? `(هاتف: ${customerPhone})` : ''}</p>
+                <p><strong>نوع التصليح:</strong> ${data.repairType}</p>
+                <p><strong>تكلفة الصيانة:</strong> <span style="color: var(--primary); font-weight: bold;">${formattedPriceDisplay} د.ع</span></p>
+                <p><strong>تاريخ الصيانة:</strong> ${mDateFormatted}</p>
+                <p><strong>تاريخ انتهاء الضمان:</strong> ${eDateFormatted} (${warrantyDays} يوم ضمان)</p>
+                <p><strong>حالة الضمان:</strong> `;
+            
+            if (warrantyDays === 0) {
+                html += `<span class="expired-warranty">بدون ضمان (0 يوم)</span>`;
+            } else if (!isExpired && diffDays >= 0) {
+                html += `<span class="active-warranty">نافذ (باقي ${diffDays} يوم)</span>`;
+            } else {
+                html += `<span class="expired-warranty">منتهي الضمان</span>`;
+            }
+            
+            html += `</p></div>`;
+        });
+
+        container.innerHTML = html;
+    }
+
+    window.filterRecords = function() {
+        const queryVal = document.getElementById('searchCarNumber').value.trim().toLowerCase();
+        
+        if (!queryVal) {
+            renderRecords(allMaintenancesData);
+            return;
+        }
+
+        const filtered = allMaintenancesData.filter(item => 
+            (item.invoiceNumber && item.invoiceNumber.toString().includes(queryVal)) ||
+            (item.carNumber && item.carNumber.toLowerCase().includes(queryVal)) ||
+            (item.carModel && item.carModel.toLowerCase().includes(queryVal)) ||
+            (item.customerInfo && item.customerInfo.toLowerCase().includes(queryVal)) ||
+            (item.customerPhone && item.customerPhone.includes(queryVal)) ||
+            (item.repairType && item.repairType.toLowerCase().includes(queryVal))
+        );
+
+        renderRecords(filtered);
+    }
+
+    window.saveMaintenance = async function() {
+        const statusP = document.getElementById('save-status');
+        const carNumber = document.getElementById('carNumber').value.trim();
+        const carModel = document.getElementById('carModel').value.trim();
+        const customerInfo = document.getElementById('customerInfo').value.trim();
+        const customerPhone = document.getElementById('customerPhone').value.trim();
+        const repairType = document.getElementById('repairType').value.trim();
+        const repairPriceRaw = document.getElementById('repairPrice').value.trim();
+        const repairPrice = repairPriceRaw.replace(/,/g, '');
+        const selectedDateVal = document.getElementById('maintenanceDateInput').value;
+        const warrantyDays = parseInt(document.getElementById('warrantyDays').value);
+        const finalWarrantyDays = isNaN(warrantyDays) ? 0 : warrantyDays;
+
+        if(!carNumber || !repairType) {
+            alert('يرجى إدخال رقم السيارة ونوع التصليح على الأقل!');
+            return;
+        }
+
+        statusP.style.color = "blue";
+        statusP.innerText = "جاري الحفظ وتوليد الفاتورة...";
+
+        let nextInvoiceNumber = 1001;
+        if (allMaintenancesData.length > 0) {
+            const maxInv = Math.max(...allMaintenancesData.map(item => parseInt(item.invoiceNumber) || 1000));
+            nextInvoiceNumber = maxInv + 1;
+        }
+
+        const mDate = selectedDateVal ? new Date(selectedDateVal) : new Date();
+        const expiryDate = new Date(mDate);
+        expiryDate.setDate(mDate.getDate() + finalWarrantyDays);
+
+        try {
+            await push(ref(db, 'maintenances'), {
+                invoiceNumber: nextInvoiceNumber,
+                carNumber: carNumber,
+                carModel: carModel || 'غير محدد',
+                customerInfo: customerInfo || 'غير محدد',
+                customerPhone: customerPhone,
+                repairType: repairType,
+                repairPrice: repairPrice || '0',
+                maintenanceDate: mDate.toISOString(),
+                expiryDate: expiryDate.toISOString(),
+                warrantyDays: finalWarrantyDays
+            });
+            
+            statusP.style.color = "green";
+            statusP.innerText = `✓ تم حفظ الفاتورة رقم #${nextInvoiceNumber} بنجاح!`;
+            
+            document.getElementById('carNumber').value = '';
+            document.getElementById('carModel').value = '';
+            document.getElementById('customerInfo').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('repairType').value = '';
+            document.getElementById('repairPrice').value = '';
+            document.getElementById('warrantyDays').value = '30';
+            
+            setTimeout(() => { statusP.innerText = ''; }, 3000);
+        } catch (e) {
+            console.error("Save Error:", e);
+            statusP.style.color = "red";
+            statusP.innerText = "❌ فشل الحفظ: " + e.message;
+        }
+    }
+
+    window.deleteRecord = async function(id) {
+        if (confirm("هل أنت متأكد من حذف هذه الفاتورة وسجل الصيانة بشكل نهائي؟")) {
+            try {
+                await remove(ref(db, `maintenances/${id}`));
+            } catch (e) {
+                console.error("Delete Error:", e);
+                alert("فشل الحذف: " + e.message);
+            }
+        }
+    }
+
+    window.openEditModal = function(id) {
+        const item = allMaintenancesData.find(d => d.id === id);
+        if (!item) return;
+
+        document.getElementById('edit-id').value = item.id;
+        document.getElementById('modal-inv-label').innerText = item.invoiceNumber || '';
+        document.getElementById('edit-carNumber').value = item.carNumber || '';
+        document.getElementById('edit-carModel').value = item.carModel || '';
+        document.getElementById('edit-customerInfo').value = item.customerInfo || '';
+        document.getElementById('edit-customerPhone').value = item.customerPhone || '';
+        document.getElementById('edit-repairType').value = item.repairType || '';
+        
+        const rawPrice = item.repairPrice ? item.repairPrice.toString().replace(/,/g, '') : '';
+        document.getElementById('edit-repairPrice').value = rawPrice ? Number(rawPrice).toLocaleString() : '';
+        
+        document.getElementById('edit-warrantyDays').value = item.warrantyDays !== undefined ? item.warrantyDays : 30;
+
+        document.getElementById('edit-modal').classList.remove('hidden');
+    }
+
+    window.closeEditModal = function() {
+        document.getElementById('edit-modal').classList.add('hidden');
+    }
+
+    window.saveEditedRecord = async function() {
+        const id = document.getElementById('edit-id').value;
+        const newCar = document.getElementById('edit-carNumber').value.trim();
+        const newModel = document.getElementById('edit-carModel').value.trim();
+        const newCust = document.getElementById('edit-customerInfo').value.trim();
+        const newPhone = document.getElementById('edit-customerPhone').value.trim();
+        const newRepair = document.getElementById('edit-repairType').value.trim();
+        const newPriceRaw = document.getElementById('edit-repairPrice').value.trim();
+        const newPrice = newPriceRaw.replace(/,/g, '');
+        const newWarranty = parseInt(document.getElementById('edit-warrantyDays').value);
+        const finalWarrantyDays = isNaN(newWarranty) ? 0 : newWarranty;
+
+        if (!newCar || !newRepair) {
+            alert("رقم السيارة ونوع التصليح لا يمكن أن يكونا فارغين!");
+            return;
+        }
+
+        const targetItem = allMaintenancesData.find(item => item.id === id);
+        const mDate = targetItem ? new Date(targetItem.maintenanceDate) : new Date();
+        const newExpiryDate = new Date(mDate);
+        newExpiryDate.setDate(mDate.getDate() + finalWarrantyDays);
+
+        try {
+            const recordRef = ref(db, `maintenances/${id}`);
+            await update(recordRef, {
+                carNumber: newCar,
+                carModel: newModel || 'غير محدد',
+                customerInfo: newCust || 'غير محدد',
+                customerPhone: newPhone,
+                repairType: newRepair,
+                repairPrice: newPrice || '0',
+                warrantyDays: finalWarrantyDays,
+                expiryDate: newExpiryDate.toISOString()
+            });
+
+            closeEditModal();
+            alert("✓ تم تحديث تفاصيل الفاتورة بنجاح!");
+        } catch (e) {
+            console.error("Update Error:", e);
+            alert("فشل التعديل: " + e.message);
+        }
+    }
+
+    window.printReceipt = function(invNum, carNum, carMod, custName, repair, price, mDate, eDate, warranty) {
+        const formattedPrice = Number(price || 0).toLocaleString();
+        const printWindow = window.open('', '', 'height=600,width=800');
+        printWindow.document.write(`
+            <html lang="ar" dir="rtl">
+            <head>
+                <title>فاتورة صيانة #${invNum} - محل أبو ياسر</title>
+                <style>
+                    body { font-family: 'Cairo', Tahoma, sans-serif; padding: 20px; color: #1e293b; text-align: right; }
+                    .receipt-box { border: 2px dashed #cbd5e1; padding: 25px; border-radius: 12px; max-width: 500px; margin: auto; background: #fff; }
+                    h2 { text-align: center; color: #2563eb; margin-bottom: 5px; }
+                    .inv-title { text-align: center; background: #e0f2fe; color: #2563eb; padding: 5px; border-radius: 6px; font-weight: bold; margin-bottom: 15px; }
+                    p { margin: 10px 0; font-size: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px; }
+                    .footer { text-align: center; margin-top: 20px; font-size: 13px; color: #64748b; }
+                </style>
+            </head>
+            <body>
+                <div class="receipt-box">
+                    <h2>🔧 محل أبو ياسر لصيانة السيارات</h2>
+                    <p style="text-align: center; font-size: 13px; color: #64748b; margin-bottom: 15px;">إيصال صيانة وضمان رسمي</p>
+                    <div class="inv-title">رقم الفاتورة: #${invNum}</div>
+                    <p><strong>اسم العميل:</strong> ${custName}</p>
+                    <p><strong>رقم السيارة:</strong> ${carNum} (${carMod})</p>
+                    <p><strong>نوع التصليح:</strong> ${repair}</p>
+                    <p><strong>تكلفة الصيانة:</strong> ${formattedPrice} د.ع</p>
+                    <p><strong>تاريخ الصيانة:</strong> ${mDate}</p>
+                    <p><strong>انتهاء الضمان:</strong> ${eDate} (${warranty} يوم)</p>
+                    <div class="footer">
+                        <p>شكراً لثقتكم بنا - هاتف الورشة: 07700000000</p>
+                    </div>
+                </div>
+                <script>
+                    window.onload = function() { window.print(); window.close(); }
+                <\/script>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+    }
+</script>
+
+</body>
+</html>
