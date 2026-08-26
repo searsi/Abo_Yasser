@@ -193,7 +193,6 @@
 
         .hidden { display: none !important; }
 
-        /* نافذة التعديل المنبثقة (Modal) */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -493,13 +492,10 @@
     const ADMIN_USER = "admin";
     const ADMIN_PASS = "123456";
 
-    window.onload = function() {
-        const todayStr = new Date().toISOString().split('T')[0];
-        const dateInput = document.getElementById('maintenanceDateInput');
-        if(dateInput) dateInput.value = todayStr;
-
-        logout();
-    }
+    // تهيئة فورية للحقول والصفحة
+    const todayStr = new Date().toISOString().split('T')[0];
+    const dateInput = document.getElementById('maintenanceDateInput');
+    if(dateInput) dateInput.value = todayStr;
 
     window.formatPriceInput = function(inputElement) {
         let value = inputElement.value.replace(/[^\d]/g, '');
@@ -562,7 +558,7 @@
             renderRecords(allMaintenancesData);
         }, (error) => {
             console.error("Sync Error:", error);
-            document.getElementById('live-records-container').innerHTML = '<p class="error-msg">خطأ في مزامنة البيانات.</p>';
+            document.getElementById('live-records-container').innerHTML = '<p class="error-msg">خطأ في مزامنة البيانات: ' + error.message + '</p>';
         });
     }
 
@@ -626,7 +622,7 @@
             }
 
             html += `
-                    <button class="icon-btn print" title="طباعة وصل" onclick="printReceipt('${invNum}', '${data.carNumber}', '${data.carModel || ''}', '${data.customerInfo || ''}', '${data.repairType}', '${cleanPriceVal}', '${mDateFormatted}', '${eDateFormatted}', '${warrantyDays}')">🖨️</button>
+                    <button class="icon-btn print" title="طباعة وصل" onclick="printReceipt('${data.id}')">🖨️</button>
                     <button class="icon-btn edit" title="تعديل السجل" onclick="openEditModal('${data.id}')">✏️</button>
                     <button class="icon-btn delete" title="حذف السجل" onclick="deleteRecord('${data.id}')">🗑️</button>
                 </div>
@@ -652,6 +648,131 @@
         });
 
         container.innerHTML = html;
+    }
+
+    // دالة الطباعة بالمعرف المباشر بدلاً من النصوص المعقدة
+    window.printReceipt = function(id) {
+        const item = allMaintenancesData.find(d => d.id === id);
+        if (!item) return;
+
+        const invNum = item.invoiceNumber || '---';
+        const carNum = item.carNumber || '';
+        const carModel = item.carModel || '';
+        const customerInfo = item.customerInfo || '';
+        const repairType = item.repairType || '';
+        const warrantyDays = item.warrantyDays || 0;
+        
+        const mDate = new Date(item.maintenanceDate).toLocaleDateString('ar-IQ');
+        const eDate = new Date(item.expiryDate).toLocaleDateString('ar-IQ');
+        const cleanPriceVal = typeof item.repairPrice === 'string' ? item.repairPrice.replace(/,/g, '') : item.repairPrice;
+        const formattedPrice = Number(cleanPriceVal || 0).toLocaleString();
+
+        const printWindow = window.open('', '_blank', 'width=400,height=600');
+        
+        if (!printWindow) {
+            alert("يرجى السماح بالنوافذ المنبثقة (Pop-ups) من إعدادات المتصفح لكي تعمل الطباعة بنجاح.");
+            return;
+        }
+
+        const htmlContent = `
+            <!DOCTYPE html>
+            <html lang="ar" dir="rtl">
+            <head>
+                <meta charset="UTF-8">
+                <title>فاتورة رقم #${invNum}</title>
+                <style>
+                    body {
+                        font-family: 'Cairo', Tahoma, sans-serif;
+                        padding: 15px;
+                        color: #1e293b;
+                        background: #fff;
+                        direction: rtl;
+                        text-align: right;
+                        margin: 0;
+                    }
+                    .receipt-box {
+                        max-width: 350px;
+                        margin: 0 auto;
+                        border: 2px dashed #cbd5e1;
+                        padding: 15px;
+                        border-radius: 12px;
+                    }
+                    h2 {
+                        text-align: center;
+                        margin-bottom: 5px;
+                        color: #2563eb;
+                        font-size: 18px;
+                    }
+                    .sub-title {
+                        text-align: center;
+                        font-size: 12px;
+                        color: #64748b;
+                        margin-bottom: 15px;
+                        border-bottom: 1px solid #e2e8f0;
+                        padding-bottom: 8px;
+                    }
+                    .info-row {
+                        margin-bottom: 8px;
+                        font-size: 13px;
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                    .info-row span {
+                        font-weight: bold;
+                    }
+                    .price-box {
+                        margin-top: 15px;
+                        border-top: 2px solid #2563eb;
+                        padding-top: 10px;
+                        text-align: center;
+                        font-size: 16px;
+                        font-weight: bold;
+                        color: #2563eb;
+                    }
+                    .footer-note {
+                        text-align: center;
+                        font-size: 11px;
+                        color: #64748b;
+                        margin-top: 20px;
+                        border-top: 1px dashed #e2e8f0;
+                        padding-top: 8px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="receipt-box">
+                    <h2>🔧 محل أبو ياسر</h2>
+                    <div class="sub-title">إدارة الصيانات وفواتير المركبات</div>
+                    
+                    <div class="info-row">رقم الفاتورة: <span>#${invNum}</span></div>
+                    <div class="info-row">تاريخ الصيانة: <span>${mDate}</span></div>
+                    <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 8px 0;">
+                    <div class="info-row">رقم السيارة: <span>${carNum} (${carModel})</span></div>
+                    <div class="info-row">اسم العميل: <span>${customerInfo}</span></div>
+                    <div class="info-row">نوع التصليح: <span>${repairType}</span></div>
+                    <div class="info-row">مدة الضمان: <span>${warrantyDays} يوم</span></div>
+                    <div class="info-row">انتهاء الضمان: <span>${eDate}</span></div>
+                    
+                    <div class="price-box">
+                        المبلغ الإجمالي: ${formattedPrice} د.ع
+                    </div>
+                    
+                    <div class="footer-note">
+                        شكراً لثقتكم بمحل أبو ياسر للصيانة<br>مع تمنياتنا لكم السلامة دائماً
+                    </div>
+                </div>
+                
+                <script>
+                    window.onload = function() {
+                        window.print();
+                    }
+                <\/script>
+            </body>
+            </html>
+        `;
+
+        printWindow.document.write(htmlContent);
+        printWindow.document.close();
     }
 
     window.filterRecords = function() {
