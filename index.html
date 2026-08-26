@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>محل أبو ياسر - نظام إدارة الصيانات والفواتير</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -18,23 +18,31 @@
             --border-color: #cbd5e1;
         }
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Cairo', sans-serif;
             background: var(--bg-color);
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             color: var(--text-main);
         }
 
-        .container { max-width: 950px; margin: 0 auto; }
+        .container { 
+            max-width: 950px; 
+            margin: 0 auto; 
+            width: 100%;
+        }
 
         #login-section {
             background: var(--card-bg);
-            padding: 40px;
+            padding: 25px 20px;
             border-radius: 16px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
             max-width: 400px;
-            margin: 80px auto;
+            margin: 40px auto;
             text-align: center;
         }
 
@@ -43,19 +51,19 @@
             justify-content: space-between;
             align-items: center;
             background: var(--card-bg);
-            padding: 20px 30px;
+            padding: 15px;
             border-radius: 14px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 12px;
         }
 
         .connection-status {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             background: #f1f5f9;
             padding: 6px 12px;
@@ -75,53 +83,72 @@
 
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
         }
         .stat-box {
             background: var(--card-bg);
-            padding: 18px;
+            padding: 12px;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
             border: 1px solid #f1f5f9;
             text-align: center;
         }
-        .stat-box h4 { margin: 0; font-size: 13px; color: #64748b; }
-        .stat-box p { margin: 8px 0 0; font-size: 20px; font-weight: 700; color: var(--primary); }
+        .stat-box h4 { margin: 0; font-size: 12px; color: #64748b; }
+        .stat-box p { margin: 6px 0 0; font-size: 16px; font-weight: 700; color: var(--primary); }
 
         .card {
             background: var(--card-bg);
             border-radius: 14px;
-            padding: 25px;
+            padding: 15px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             border: 1px solid #f1f5f9;
         }
 
         .card h3 {
             margin-top: 0;
-            margin-bottom: 20px;
-            font-size: 18px;
+            margin-bottom: 15px;
+            font-size: 16px;
             color: var(--primary);
             border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .form-group { margin-bottom: 15px; text-align: right; }
+        .grid-2 { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 0px; 
+        }
 
-        label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; color: #475569; }
+        @media (min-width: 600px) {
+            .grid-2 { 
+                grid-template-columns: 1fr 1fr; 
+                gap: 15px; 
+            }
+            body {
+                padding: 20px;
+            }
+            .card {
+                padding: 25px;
+            }
+        }
+
+        .form-group { margin-bottom: 12px; text-align: right; }
+
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; color: #475569; }
 
         input, select {
             width: 100%;
-            padding: 12px 15px;
+            padding: 12px;
             box-sizing: border-box;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             font-family: 'Cairo', sans-serif;
             font-size: 14px;
             background: #fff;
+            -webkit-appearance: none;
         }
 
         input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
@@ -130,12 +157,12 @@
             display: flex;
             gap: 6px;
             flex-wrap: wrap;
-            margin-top: 6px;
+            margin-top: 8px;
         }
         .badge-model {
             background: #e2e8f0;
             border: none;
-            padding: 4px 10px;
+            padding: 6px 12px;
             border-radius: 6px;
             font-size: 12px;
             cursor: pointer;
@@ -160,7 +187,7 @@
         }
         button:hover { background: var(--primary-dark); }
 
-        .btn-danger { background: var(--danger); width: auto; padding: 8px 16px; font-size: 13px; }
+        .btn-danger { background: var(--danger); width: auto; padding: 8px 14px; font-size: 12px; }
         .btn-secondary { background: #64748b; width: auto; }
         .btn-secondary:hover { background: #475569; }
 
@@ -178,13 +205,13 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 15px;
+            padding: 10px;
             box-sizing: border-box;
         }
         .modal-card {
             background: #ffffff;
             border-radius: 14px;
-            padding: 25px;
+            padding: 15px;
             width: 100%;
             max-width: 600px;
             max-height: 90vh;
@@ -192,19 +219,25 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
 
+        @media (min-width: 600px) {
+            .modal-card {
+                padding: 25px;
+            }
+        }
+
         .result-card {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-right: 4px solid var(--primary);
-            padding: 20px;
-            margin-top: 15px;
+            padding: 15px;
+            margin-top: 12px;
             border-radius: 12px;
             text-align: right;
             position: relative;
             transition: all 0.3s ease;
         }
         .result-card:hover { transform: translateY(-2px); box-shadow: 0 6px 15px -3px rgba(0,0,0,0.05); }
-        .result-card p { margin: 6px 0; font-size: 14px; }
+        .result-card p { margin: 5px 0; font-size: 13px; word-break: break-word; }
 
         .invoice-badge {
             background: #e0f2fe;
@@ -212,30 +245,30 @@
             padding: 4px 10px;
             border-radius: 6px;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
             display: inline-block;
             margin-bottom: 8px;
         }
 
         .card-top-actions {
             position: absolute;
-            top: 15px;
-            left: 15px;
+            top: 12px;
+            left: 12px;
             display: flex;
-            gap: 8px;
+            gap: 5px;
         }
 
         .icon-btn {
             background: #ffffff;
             border: 1px solid #cbd5e1;
             border-radius: 50%;
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 15px;
+            font-size: 14px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             transition: all 0.2s;
         }
@@ -245,9 +278,9 @@
         .icon-btn.print:hover { background: #e0f2fe; border-color: var(--primary); color: var(--primary); }
         .icon-btn.whatsapp:hover { background: #dcfce7; border-color: var(--success); color: var(--success); }
 
-        .active-warranty { color: var(--success); font-weight: 700; background: #dcfce7; padding: 3px 8px; border-radius: 6px; display: inline-block;}
-        .expired-warranty { color: var(--danger); font-weight: 700; background: #fee2e2; padding: 3px 8px; border-radius: 6px; display: inline-block;}
-        .error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; font-weight: 600; }
+        .active-warranty { color: var(--success); font-weight: 700; background: #dcfce7; padding: 2px 6px; border-radius: 6px; display: inline-block;}
+        .expired-warranty { color: var(--danger); font-weight: 700; background: #fee2e2; padding: 2px 6px; border-radius: 6px; display: inline-block;}
+        .error-msg { color: var(--danger); font-size: 12px; margin-top: 6px; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -256,7 +289,7 @@
     <!-- تسجيل الدخول -->
     <div id="login-section">
         <h2>🔧 محل أبو ياسر</h2>
-        <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">تسجيل دخول لوحة التحكم</p>
+        <p style="color: #64748b; font-size: 13px; margin-bottom: 15px;">تسجيل دخول لوحة التحكم</p>
         <div class="form-group">
             <label>اسم المستخدم</label>
             <input type="text" id="username" placeholder="أدخل اسم المستخدم...">
@@ -272,8 +305,8 @@
     <!-- لوحة التحكم -->
     <div id="dashboard-section" class="hidden">
         <div class="dashboard-header">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <h2 style="margin: 0;">🚗 نظام إدارة الصيانات والفواتير</h2>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <h2 style="margin: 0; font-size: 16px;">🚗 نظام إدارة الصيانات والفواتير</h2>
                 <div class="connection-status">
                     <span id="status-dot" class="status-dot"></span>
                     <span id="status-text">جاري الاتصال...</span>
@@ -348,8 +381,8 @@
                     <input type="number" id="warrantyDays" value="30">
                 </div>
             </div>
-            <button onclick="saveMaintenance()" style="margin-top: 10px;">💾 حفظ الفاتورة أونلاين</button>
-            <p id="save-status" style="margin-top: 10px; font-weight: bold;"></p>
+            <button onclick="saveMaintenance()" style="margin-top: 5px;">💾 حفظ الفاتورة أونلاين</button>
+            <p id="save-status" style="margin-top: 8px; font-weight: bold; font-size: 13px;"></p>
         </div>
 
         <!-- البحث والتزامن المباشر -->
@@ -357,10 +390,10 @@
             <h3>🔍 البحث السريع عن السجلات</h3>
             <div class="form-group">
                 <label>ابحث برقم الفاتورة، رقم السيارة، الموديل، اسم العميل، أو الهاتف:</label>
-                <input type="text" id="searchCarNumber" placeholder="اكتب رقم الفاتورة (مثلاً 1001) أو رقم السيارة للبحث..." oninput="filterRecords()">
+                <input type="text" id="searchCarNumber" placeholder="اكتب رقم الفاتورة أو رقم السيارة للبحث..." oninput="filterRecords()">
             </div>
             <!-- الحاوية لعرض السجلات -->
-            <div id="live-records-container" style="margin-top: 15px;">
+            <div id="live-records-container" style="margin-top: 12px;">
                 <p style="color: var(--primary);">جاري جلب وتزامن البيانات من قاعدة البيانات...</p>
             </div>
         </div>
@@ -370,7 +403,7 @@
 <!-- نافذة تعديل الفاتورة المنبثقة (Modal) -->
 <div id="edit-modal" class="modal-overlay hidden">
     <div class="modal-card">
-        <h3 style="color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-top: 0;">✏️ تعديل تفاصيل الفاتورة رقم <span id="modal-inv-label"></span></h3>
+        <h3 style="color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; margin-top: 0; font-size: 15px;">✏️ تعديل تفاصيل الفاتورة رقم <span id="modal-inv-label"></span></h3>
         <input type="hidden" id="edit-id">
         
         <div class="grid-2">
@@ -408,7 +441,7 @@
             <input type="number" id="edit-warrantyDays">
         </div>
 
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
             <button onclick="saveEditedRecord()" style="flex: 1;">💾 حفظ التعديلات</button>
             <button class="btn-secondary" onclick="closeEditModal()" style="flex: 1;">إلغاء</button>
         </div>
@@ -468,7 +501,6 @@
         logout();
     }
 
-    // دالة تنسيق الفوارز التلقائية أثناء الكتابة
     window.formatPriceInput = function(inputElement) {
         let value = inputElement.value.replace(/[^\d]/g, '');
         if (value) {
@@ -557,7 +589,7 @@
         const container = document.getElementById('live-records-container');
 
         if (dataList.length === 0) {
-            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 15px;">لا توجد أي فواتير مسجلة حتى الآن.</p>';
+            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 15px; font-size: 13px;">لا توجد أي فواتير مسجلة حتى الآن.</p>';
             return;
         }
 
@@ -600,7 +632,7 @@
                 </div>
 
                 <div class="invoice-badge">📄 رقم الفاتورة: #${invNum}</div>
-                <p style="font-size: 16px; color: var(--primary);"><strong>رقم السيارة:</strong> ${data.carNumber} <span style="color: #64748b; font-weight: 600;">${carModelText}</span></p>
+                <p style="font-size: 14px; color: var(--primary);"><strong>رقم السيارة:</strong> ${data.carNumber} <span style="color: #64748b; font-weight: 600;">${carModelText}</span></p>
                 <p><strong>اسم العميل:</strong> ${data.customerInfo} ${customerPhone ? `(هاتف: ${customerPhone})` : ''}</p>
                 <p><strong>نوع التصليح:</strong> ${data.repairType}</p>
                 <p><strong>تكلفة الصيانة:</strong> <span style="color: var(--primary); font-weight: bold;">${formattedPriceDisplay} د.ع</span></p>
@@ -772,58 +804,15 @@
                 customerPhone: newPhone,
                 repairType: newRepair,
                 repairPrice: newPrice || '0',
-                warrantyDays: finalWarrantyDays,
-                expiryDate: newExpiryDate.toISOString()
+                expiryDate: newExpiryDate.toISOString(),
+                warrantyDays: finalWarrantyDays
             });
-
             closeEditModal();
-            alert("✓ تم تحديث تفاصيل الفاتورة بنجاح!");
         } catch (e) {
             console.error("Update Error:", e);
             alert("فشل التعديل: " + e.message);
         }
     }
-
-    window.printReceipt = function(invNum, carNum, carMod, custName, repair, price, mDate, eDate, warranty) {
-        const formattedPrice = Number(price || 0).toLocaleString();
-        const printWindow = window.open('', '', 'height=600,width=800');
-        printWindow.document.write(`
-            <html lang="ar" dir="rtl">
-            <head>
-                <title>فاتورة صيانة #${invNum} - محل أبو ياسر</title>
-                <style>
-                    body { font-family: 'Cairo', Tahoma, sans-serif; padding: 20px; color: #1e293b; text-align: right; }
-                    .receipt-box { border: 2px dashed #cbd5e1; padding: 25px; border-radius: 12px; max-width: 500px; margin: auto; background: #fff; }
-                    h2 { text-align: center; color: #2563eb; margin-bottom: 5px; }
-                    .inv-title { text-align: center; background: #e0f2fe; color: #2563eb; padding: 5px; border-radius: 6px; font-weight: bold; margin-bottom: 15px; }
-                    p { margin: 10px 0; font-size: 15px; border-bottom: 1px solid #f1f5f9; padding-bottom: 5px; }
-                    .footer { text-align: center; margin-top: 20px; font-size: 13px; color: #64748b; }
-                </style>
-            </head>
-            <body>
-                <div class="receipt-box">
-                    <h2>🔧 محل أبو ياسر لصيانة السيارات</h2>
-                    <p style="text-align: center; font-size: 13px; color: #64748b; margin-bottom: 15px;">إيصال صيانة وضمان رسمي</p>
-                    <div class="inv-title">رقم الفاتورة: #${invNum}</div>
-                    <p><strong>اسم العميل:</strong> ${custName}</p>
-                    <p><strong>رقم السيارة:</strong> ${carNum} (${carMod})</p>
-                    <p><strong>نوع التصليح:</strong> ${repair}</p>
-                    <p><strong>تكلفة الصيانة:</strong> ${formattedPrice} د.ع</p>
-                    <p><strong>تاريخ الصيانة:</strong> ${mDate}</p>
-                    <p><strong>انتهاء الضمان:</strong> ${eDate} (${warranty} يوم)</p>
-                    <div class="footer">
-                        <p>شكراً لثقتكم بنا - هاتف الورشة: 07700000000</p>
-                    </div>
-                </div>
-                <script>
-                    window.onload = function() { window.print(); window.close(); }
-                <\/script>
-            </body>
-            </html>
-        `);
-        printWindow.document.close();
-    }
 </script>
-
 </body>
 </html>
