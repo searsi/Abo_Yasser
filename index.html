@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>محل أبو ياسر - نظام إدارة الصيانات والفواتير</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2563eb;
+            --primary: #3b82f6;
             --primary-dark: #1d4ed8;
-            --success: #16a34a;
-            --danger: #dc2626;
-            --warning: #d97706;
-            --bg-color: #f8fafc;
+            --success: #10b981;
+            --success-dark: #059669;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-color: #f1f5f9;
             --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --border-color: #cbd5e1;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --radius: 16px;
         }
 
         * {
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -28,22 +32,13 @@
             margin: 0;
             padding: 10px;
             color: var(--text-main);
+            overflow-x: hidden;
         }
 
         .container { 
-            max-width: 950px; 
+            max-width: 1000px; 
             margin: 0 auto; 
             width: 100%;
-        }
-
-        #login-section {
-            background: var(--card-bg);
-            padding: 25px 20px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            max-width: 400px;
-            margin: 40px auto;
-            text-align: center;
         }
 
         .dashboard-header {
@@ -52,68 +47,93 @@
             align-items: center;
             background: var(--card-bg);
             padding: 15px;
-            border-radius: 14px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
             margin-bottom: 15px;
             flex-wrap: wrap;
             gap: 12px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .dashboard-header h2 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         .connection-status {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 12px;
+            gap: 6px;
+            font-size: 11px;
             font-weight: 600;
-            background: #f1f5f9;
+            background: #f8fafc;
             padding: 6px 12px;
-            border-radius: 20px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
         }
 
         .status-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background-color: #cbd5e1;
             display: inline-block;
         }
 
-        .status-dot.online { background-color: var(--success); box-shadow: 0 0 8px rgba(22, 163, 74, 0.5); }
-        .status-dot.offline { background-color: var(--danger); box-shadow: 0 0 8px rgba(220, 38, 38, 0.5); }
+        .status-dot.online { background-color: var(--success); box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+        .status-dot.offline { background-color: var(--danger); box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
 
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
             margin-bottom: 15px;
         }
+
+        @media (max-width: 480px) {
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .stat-box {
             background: var(--card-bg);
             padding: 12px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-            border: 1px solid #f1f5f9;
+            border-radius: var(--radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--border-color);
             text-align: center;
         }
-        .stat-box h4 { margin: 0; font-size: 12px; color: #64748b; }
-        .stat-box p { margin: 6px 0 0; font-size: 16px; font-weight: 700; color: var(--primary); }
+        
+        .stat-box h4 { margin: 0; font-size: 11px; color: var(--text-muted); font-weight: 600; }
+        .stat-box p { margin: 6px 0 0; font-size: 16px; font-weight: 800; color: var(--primary); word-break: break-all; }
 
         .card {
             background: var(--card-bg);
-            border-radius: 14px;
+            border-radius: var(--radius);
             padding: 15px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
             margin-bottom: 15px;
-            border: 1px solid #f1f5f9;
+            border: 1px solid var(--border-color);
         }
 
         .card h3 {
             margin-top: 0;
             margin-bottom: 15px;
-            font-size: 16px;
-            color: var(--primary);
-            border-bottom: 2px solid #f1f5f9;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            border-bottom: 2px solid var(--bg-color);
             padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .grid-2 { 
@@ -125,33 +145,42 @@
         @media (min-width: 600px) {
             .grid-2 { 
                 grid-template-columns: 1fr 1fr; 
-                gap: 15px; 
+                gap: 12px; 
             }
             body {
                 padding: 20px;
             }
             .card {
-                padding: 25px;
+                padding: 20px;
+            }
+            .dashboard-header {
+                padding: 20px;
             }
         }
 
-        .form-group { margin-bottom: 12px; text-align: right; }
+        .form-group { margin-bottom: 14px; text-align: right; }
 
-        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; color: #475569; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 12.5px; color: #334155; }
 
         input, select {
             width: 100%;
-            padding: 12px;
+            padding: 11px 12px;
             box-sizing: border-box;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
             font-family: 'Cairo', sans-serif;
             font-size: 14px;
-            background: #fff;
+            background: #ffffff;
+            color: var(--text-main);
+            transition: all 0.2s;
             -webkit-appearance: none;
         }
 
-        input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+        input:focus, select:focus { 
+            outline: none; 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); 
+        }
 
         .quick-models {
             display: flex;
@@ -160,35 +189,37 @@
             margin-top: 8px;
         }
         .badge-model {
-            background: #e2e8f0;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 12px;
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 11.5px;
             cursor: pointer;
             font-family: 'Cairo', sans-serif;
             font-weight: 600;
             color: #475569;
             width: auto;
+            transition: all 0.2s;
         }
-        .badge-model:hover { background: var(--primary); color: white; }
+        .badge-model:hover { background: var(--primary); color: white; border-color: var(--primary); }
 
         button {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 12px 16px;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 10px;
             font-family: 'Cairo', sans-serif;
-            font-weight: 600;
-            font-size: 15px;
+            font-weight: 700;
+            font-size: 14px;
             width: 100%;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
         }
         button:hover { background: var(--primary-dark); }
 
-        .btn-danger { background: var(--danger); width: auto; padding: 8px 14px; font-size: 12px; }
-        .btn-secondary { background: #64748b; width: auto; }
+        .btn-secondary { background: #64748b; width: auto; box-shadow: none; }
         .btn-secondary:hover { background: #475569; }
 
         .hidden { display: none !important; }
@@ -199,7 +230,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -209,13 +241,14 @@
         }
         .modal-card {
             background: #ffffff;
-            border-radius: 14px;
+            border-radius: var(--radius);
             padding: 15px;
             width: 100%;
-            max-width: 600px;
+            max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
         }
 
         @media (min-width: 600px) {
@@ -225,93 +258,128 @@
         }
 
         .result-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
             border-right: 4px solid var(--primary);
             padding: 15px;
             margin-top: 12px;
-            border-radius: 12px;
+            border-radius: var(--radius);
             text-align: right;
             position: relative;
-            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            transition: all 0.2s ease;
         }
-        .result-card:hover { transform: translateY(-2px); box-shadow: 0 6px 15px -3px rgba(0,0,0,0.05); }
-        .result-card p { margin: 5px 0; font-size: 13px; word-break: break-word; }
+        .result-card p { margin: 5px 0; font-size: 13px; word-break: break-word; color: #334155; }
 
         .invoice-badge {
-            background: #e0f2fe;
+            background: #eff6ff;
             color: var(--primary);
             padding: 4px 10px;
             border-radius: 6px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11.5px;
             display: inline-block;
             margin-bottom: 8px;
+            border: 1px solid #dbeafe;
         }
 
+        /* تعديل جوهري لتصميم الأزرار داخل الكارت لكي تتطابق تماماً مع الشاشات الصغيرة */
         .card-top-actions {
-            position: absolute;
-            top: 12px;
-            left: 12px;
             display: flex;
             gap: 5px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--bg-color);
+            padding-bottom: 8px;
+        }
+
+        @media (min-width: 550px) {
+            .card-top-actions {
+                position: absolute;
+                top: 15px;
+                left: 15px;
+                margin-bottom: 0;
+                border-bottom: none;
+                padding-bottom: 0;
+            }
         }
 
         .icon-btn {
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 6px 10px;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 14px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            font-size: 11.5px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
             transition: all 0.2s;
+            color: #334155;
+            text-decoration: none;
+            box-shadow: none;
+            width: auto;
+            flex: 1;
         }
 
-        .icon-btn.edit:hover { background: #fef3c7; border-color: var(--warning); color: var(--warning); }
-        .icon-btn.delete:hover { background: #fee2e2; border-color: var(--danger); color: var(--danger); }
-        .icon-btn.print:hover { background: #e0f2fe; border-color: var(--primary); color: var(--primary); }
-        .icon-btn.whatsapp:hover { background: #dcfce7; border-color: var(--success); color: var(--success); }
+        @media (min-width: 550px) {
+            .icon-btn {
+                flex: unset;
+            }
+        }
 
-        .active-warranty { color: var(--success); font-weight: 700; background: #dcfce7; padding: 2px 6px; border-radius: 6px; display: inline-block;}
-        .expired-warranty { color: var(--danger); font-weight: 700; background: #fee2e2; padding: 2px 6px; border-radius: 6px; display: inline-block;}
-        .error-msg { color: var(--danger); font-size: 12px; margin-top: 6px; font-weight: 600; }
+        .icon-btn.edit:hover { background: #fef3c7; border-color: var(--warning); color: #d97706; }
+        .icon-btn.delete:hover { background: #fee2e2; border-color: var(--danger); color: var(--danger); }
+        .icon-btn.print:hover { background: #eff6ff; border-color: var(--primary); color: var(--primary); }
+        .icon-btn.return-btn { background: #ecfdf5; border-color: var(--success); color: var(--success-dark); }
+        .icon-btn.return-btn:hover { background: #d1fae5; }
+
+        .returns-history-box {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px dashed #cbd5e1;
+        }
+        .returns-history-box h5 {
+            margin: 0 0 6px 0;
+            color: var(--success-dark);
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .return-item-row {
+            background: #ffffff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+        .return-item-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .active-warranty { color: var(--success-dark); font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; display: inline-block; border: 1px solid #a7f3d0;}
+        .expired-warranty { color: var(--danger); font-weight: 700; background: #fef2f2; padding: 2px 6px; border-radius: 4px; display: inline-block; border: 1px solid #fecaca;}
+        .error-msg { color: var(--danger); font-size: 11.5px; margin-top: 5px; font-weight: 600; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- تسجيل الدخول -->
-    <div id="login-section">
-        <h2>🔧 محل أبو ياسر</h2>
-        <p style="color: #64748b; font-size: 13px; margin-bottom: 15px;">تسجيل دخول لوحة التحكم</p>
-        <div class="form-group">
-            <label>اسم المستخدم</label>
-            <input type="text" id="username" placeholder="أدخل اسم المستخدم...">
-        </div>
-        <div class="form-group">
-            <label>كلمة المرور</label>
-            <input type="password" id="password" placeholder="••••••••">
-        </div>
-        <button onclick="checkLogin()">دخول للنظام</button>
-        <p id="login-error" class="error-msg"></p>
-    </div>
-
     <!-- لوحة التحكم -->
-    <div id="dashboard-section" class="hidden">
+    <div id="dashboard-section">
         <div class="dashboard-header">
-            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <h2 style="margin: 0; font-size: 16px;">🚗 نظام إدارة الصيانات والفواتير</h2>
-                <div class="connection-status">
-                    <span id="status-dot" class="status-dot"></span>
-                    <span id="status-text">جاري الاتصال...</span>
-                </div>
+            <h2>🚗 محل أبو ياسر <span style="font-size: 12px; font-weight: 400; color: var(--text-muted);">| إدارة الصيانات</span></h2>
+            <div class="connection-status">
+                <span id="status-dot" class="status-dot"></span>
+                <span id="status-text">جاري الاتصال...</span>
             </div>
-            <button class="btn-danger" onclick="logout()">تسجيل خروج</button>
         </div>
 
         <!-- شريط الإحصائيات -->
@@ -352,16 +420,6 @@
             </div>
             <div class="grid-2">
                 <div class="form-group">
-                    <label>اسم العميل</label>
-                    <input type="text" id="customerInfo" placeholder="اسم الزبون...">
-                </div>
-                <div class="form-group">
-                    <label>رقم هاتف العميل (للإشعارات والواتساب)</label>
-                    <input type="text" id="customerPhone" placeholder="07700000000">
-                </div>
-            </div>
-            <div class="grid-2">
-                <div class="form-group">
                     <label>نوع التصليح</label>
                     <input type="text" id="repairType" placeholder="تبديل فيت بَم...">
                 </div>
@@ -381,28 +439,50 @@
                 </div>
             </div>
             <button onclick="saveMaintenance()" style="margin-top: 5px;">💾 حفظ الفاتورة أونلاين</button>
-            <p id="save-status" style="margin-top: 8px; font-weight: bold; font-size: 13px;"></p>
+            <p id="save-status" style="margin-top: 8px; font-weight: bold; font-size: 12px; text-align: center;"></p>
         </div>
 
         <!-- البحث والتزامن المباشر -->
         <div class="card" id="search-card-wrapper">
             <h3>🔍 البحث السريع عن السجلات</h3>
-            <div class="form-group">
-                <label>ابحث برقم الفاتورة، رقم السيارة، الموديل، اسم العميل، أو الهاتف:</label>
-                <input type="text" id="searchCarNumber" placeholder="اكتب رقم الفاتورة أو رقم السيارة للبحث..." oninput="filterRecords()">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label>ابحث برقم الفاتورة، رقم السيارة، الموديل، أو نوع التصليح:</label>
+                <input type="text" id="searchCarNumber" placeholder="اكتب للبحث الفوري..." oninput="filterRecords()">
             </div>
             <!-- الحاوية لعرض السجلات -->
             <div id="live-records-container" style="margin-top: 12px;">
-                <p style="color: var(--primary);">جاري جلب وتزامن البيانات من قاعدة البيانات...</p>
+                <p style="color: var(--primary); text-align: center; padding: 15px;">جاري جلب وتزامن البيانات من قاعدة البيانات...</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- نافذة تعديل الفاتورة المنبثقة (Modal) -->
+<!-- نافذة إضافة الراجع داخل الفاتورة -->
+<div id="return-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+        <h3 style="color: var(--success-dark); border-bottom: 2px solid var(--bg-color); padding-bottom: 8px; margin-top: 0; font-size: 15px;">🔄 إضافة سجل "راجع" للفاتورة رقم <span id="return-inv-label"></span></h3>
+        <input type="hidden" id="return-parent-id">
+        
+        <div class="form-group">
+            <label>تفاصيل الراجع / سبب المراجعة أو الإصلاح</label>
+            <input type="text" id="return-repair-type" placeholder="مثلاً: مراجعة تبديل فيت بَم...">
+        </div>
+        <div class="form-group">
+            <label>تكلفة الراجع / أجور إضافية (د.ع)</label>
+            <input type="text" id="return-repair-price" placeholder="0" oninput="formatPriceInput(this)">
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 15px;">
+            <button onclick="saveReturnRecord()" style="flex: 1; background: var(--success);">💾 حفظ الراجع</button>
+            <button class="btn-secondary" onclick="closeReturnModal()" style="flex: 1;">إلغاء</button>
+        </div>
+    </div>
+</div>
+
+<!-- نافذة تعديل الفاتورة الأساسية -->
 <div id="edit-modal" class="modal-overlay hidden">
     <div class="modal-card">
-        <h3 style="color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 8px; margin-top: 0; font-size: 15px;">✏️ تعديل تفاصيل الفاتورة رقم <span id="modal-inv-label"></span></h3>
+        <h3 style="color: var(--primary); border-bottom: 2px solid var(--bg-color); padding-bottom: 8px; margin-top: 0; font-size: 15px;">✏️ تعديل تفاصيل الفاتورة رقم <span id="modal-inv-label"></span></h3>
         <input type="hidden" id="edit-id">
         
         <div class="grid-2">
@@ -413,16 +493,6 @@
             <div class="form-group">
                 <label>نوع السيارة (الموديل)</label>
                 <input type="text" id="edit-carModel">
-            </div>
-        </div>
-        <div class="grid-2">
-            <div class="form-group">
-                <label>اسم العميل</label>
-                <input type="text" id="edit-customerInfo">
-            </div>
-            <div class="form-group">
-                <label>رقم هاتف العميل</label>
-                <input type="text" id="edit-customerPhone">
             </div>
         </div>
         <div class="grid-2">
@@ -440,7 +510,7 @@
             <input type="number" id="edit-warrantyDays">
         </div>
 
-        <div style="display: flex; gap: 10px; margin-top: 15px;">
+        <div style="display: flex; gap: 8px; margin-top: 15px;">
             <button onclick="saveEditedRecord()" style="flex: 1;">💾 حفظ التعديلات</button>
             <button class="btn-secondary" onclick="closeEditModal()" style="flex: 1;">إلغاء</button>
         </div>
@@ -469,6 +539,7 @@
         const app = initializeApp(firebaseConfig);
         db = getDatabase(app);
         initConnectionMonitor(db);
+        startRealtimeSync();
     } catch (err) {
         console.error("Firebase Initialization Error:", err);
     }
@@ -481,18 +552,14 @@
         onValue(connectedRef, (snap) => {
             if (snap.val() === true) {
                 statusDot.className = "status-dot online";
-                statusText.innerText = "متصل أونلاين (متزامن)";
+                statusText.innerText = "متصل أونلاين";
             } else {
                 statusDot.className = "status-dot offline";
-                statusText.innerText = "مقطوع / جاري إعادة الاتصال...";
+                statusText.innerText = "جاري إعادة الاتصال...";
             }
         });
     }
 
-    const ADMIN_USER = "admin";
-    const ADMIN_PASS = "123456";
-
-    // تهيئة فورية للحقول والصفحة
     const todayStr = new Date().toISOString().split('T')[0];
     const dateInput = document.getElementById('maintenanceDateInput');
     if(dateInput) dateInput.value = todayStr;
@@ -508,34 +575,6 @@
 
     window.setModel = function(modelName) {
         document.getElementById('carModel').value = modelName;
-    }
-
-    window.checkLogin = function() {
-        const userInput = document.getElementById('username').value.trim();
-        const passInput = document.getElementById('password').value;
-        
-        if (userInput === ADMIN_USER && passInput === ADMIN_PASS) {
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('login-error').innerText = '';
-            showDashboard();
-        } else {
-            document.getElementById('login-error').innerText = "خطأ في اسم المستخدم أو كلمة المرور!";
-        }
-    }
-
-    window.logout = function() {
-        document.getElementById('login-section').classList.remove('hidden');
-        document.getElementById('dashboard-section').classList.add('hidden');
-        document.getElementById('username').value = '';
-        document.getElementById('password').value = '';
-        document.getElementById('login-error').innerText = '';
-    }
-
-    function showDashboard() {
-        document.getElementById('login-section').classList.add('hidden');
-        document.getElementById('dashboard-section').classList.remove('hidden');
-        startRealtimeSync();
     }
 
     function startRealtimeSync() {
@@ -570,6 +609,14 @@
         dataList.forEach(item => {
             const cleanPrice = typeof item.repairPrice === 'string' ? item.repairPrice.replace(/,/g, '') : item.repairPrice;
             totalRevenue += parseFloat(cleanPrice) || 0;
+            
+            if (item.returnsHistory && Array.isArray(item.returnsHistory)) {
+                item.returnsHistory.forEach(ret => {
+                    const cleanRetPrice = typeof ret.price === 'string' ? ret.price.replace(/,/g, '') : ret.price;
+                    totalRevenue += parseFloat(cleanRetPrice) || 0;
+                });
+            }
+
             const eDateObj = new Date(item.expiryDate);
             if (today > eDateObj) {
                 expiredCount++;
@@ -585,7 +632,7 @@
         const container = document.getElementById('live-records-container');
 
         if (dataList.length === 0) {
-            container.innerHTML = '<p style="color: #64748b; text-align: center; padding: 15px; font-size: 13px;">لا توجد أي فواتير مسجلة حتى الآن.</p>';
+            container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 15px; font-size: 12.5px;">لا توجد أي فواتير مسجلة حتى الآن.</p>';
             return;
         }
 
@@ -604,36 +651,26 @@
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             
             const carModelText = data.carModel ? `(${data.carModel})` : '';
-            const customerPhone = data.customerPhone ? data.customerPhone : '';
             const invNum = data.invoiceNumber || 'غير محدد';
             const warrantyDays = parseInt(data.warrantyDays) || 0;
             
             const cleanPriceVal = typeof data.repairPrice === 'string' ? data.repairPrice.replace(/,/g, '') : data.repairPrice;
             const formattedPriceDisplay = Number(cleanPriceVal || 0).toLocaleString();
 
-            const whatsappMsg = encodeURIComponent(`مرحباً أستاذ ${data.customerInfo || 'العزيز'}، بخصوص فاتورتك رقم (${invNum}) لسيارتك (${data.carNumber} - ${data.carModel || ''}) التي تم تصليحها لدينا (${data.repairType}).`);
-            const whatsappUrl = data.customerPhone ? `https://wa.me/964${data.customerPhone.replace(/^0+/, '')}?text=${whatsappMsg}` : '#';
-
             html += `<div class="result-card" id="card-${data.id}">
-                <div class="card-top-actions">`;
-            
-            if (data.customerPhone) {
-                html += `<a href="${whatsappUrl}" target="_blank" class="icon-btn whatsapp" title="مراسلة عبر واتساب">📱</a>`;
-            }
-
-            html += `
-                    <button class="icon-btn print" title="طباعة وصل" onclick="printReceipt('${data.id}')">🖨️</button>
-                    <button class="icon-btn edit" title="تعديل السجل" onclick="openEditModal('${data.id}')">✏️</button>
-                    <button class="icon-btn delete" title="حذف السجل" onclick="deleteRecord('${data.id}')">🗑️</button>
+                <div class="card-top-actions">
+                    <button class="icon-btn return-btn" title="إضافة راجع" onclick="openReturnModal('${data.id}')">🔄 الراجع</button>
+                    <button class="icon-btn print" title="طباعة" onclick="printReceipt('${data.id}')">🖨️ طباعة</button>
+                    <button class="icon-btn edit" title="تعديل" onclick="openEditModal('${data.id}')">✏️ تعديل</button>
+                    <button class="icon-btn delete" title="حذف" onclick="deleteRecord('${data.id}')">🗑️ حذف</button>
                 </div>
 
                 <div class="invoice-badge">📄 رقم الفاتورة: #${invNum}</div>
-                <p style="font-size: 14px; color: var(--primary);"><strong>رقم السيارة:</strong> ${data.carNumber} <span style="color: #64748b; font-weight: 600;">${carModelText}</span></p>
-                <p><strong>اسم العميل:</strong> ${data.customerInfo} ${customerPhone ? `(هاتف: ${customerPhone})` : ''}</p>
-                <p><strong>نوع التصليح:</strong> ${data.repairType}</p>
-                <p><strong>تكلفة الصيانة:</strong> <span style="color: var(--primary); font-weight: bold;">${formattedPriceDisplay} د.ع</span></p>
+                <p style="font-size: 13.5px; color: var(--primary); font-weight: 700;"><strong>رقم السيارة:</strong> ${data.carNumber} <span style="color: var(--text-muted); font-weight: 600;">${carModelText}</span></p>
+                <p><strong>نوع التصليح الأساسي:</strong> ${data.repairType}</p>
+                <p><strong>تكلفة الصيانة الأساسية:</strong> <span style="color: var(--primary); font-weight: 700;">${formattedPriceDisplay} د.ع</span></p>
                 <p><strong>تاريخ الصيانة:</strong> ${mDateFormatted}</p>
-                <p><strong>تاريخ انتهاء الضمان:</strong> ${eDateFormatted} (${warrantyDays} يوم ضمان)</p>
+                <p><strong>انتهاء الضمان:</strong> ${eDateFormatted} (${warrantyDays} يوم)</p>
                 <p><strong>حالة الضمان:</strong> `;
             
             if (warrantyDays === 0) {
@@ -644,13 +681,78 @@
                 html += `<span class="expired-warranty">منتهي الضمان</span>`;
             }
             
-            html += `</p></div>`;
+            html += `</p>`;
+
+            if (data.returnsHistory && Array.isArray(data.returnsHistory) && data.returnsHistory.length > 0) {
+                html += `<div class="returns-history-box">
+                    <h5>📋 سجل المراجعات (الراجع):</h5>`;
+                data.returnsHistory.forEach((ret, index) => {
+                    const retPriceClean = typeof ret.price === 'string' ? ret.price.replace(/,/g, '') : ret.price;
+                    const retPriceFormatted = Number(retPriceClean || 0).toLocaleString();
+                    const retDate = new Date(ret.date).toLocaleDateString('ar-IQ');
+                    html += `<div class="return-item-row">
+                        <span><strong>#${index + 1}</strong> - ${ret.repairType} <span style="color: var(--text-muted);">(${retDate})</span></span>
+                        <span style="color: var(--success-dark); font-weight: 700;">${retPriceFormatted} د.ع</span>
+                    </div>`;
+                });
+                html += `</div>`;
+            }
+
+            html += `</div>`;
         });
 
         container.innerHTML = html;
     }
 
-    // دالة الطباعة بالمعرف المباشر بدلاً من النصوص المعقدة
+    window.openReturnModal = function(id) {
+        const item = allMaintenancesData.find(d => d.id === id);
+        if (!item) return;
+
+        document.getElementById('return-parent-id').value = id;
+        document.getElementById('return-inv-label').innerText = item.invoiceNumber || '';
+        document.getElementById('return-repair-type').value = 'راجع - ';
+        document.getElementById('return-repair-price').value = '';
+
+        document.getElementById('return-modal').classList.remove('hidden');
+    }
+
+    window.closeReturnModal = function() {
+        document.getElementById('return-modal').classList.add('hidden');
+    }
+
+    window.saveReturnRecord = async function() {
+        const parentId = document.getElementById('return-parent-id').value;
+        const repairType = document.getElementById('return-repair-type').value.trim();
+        const priceRaw = document.getElementById('return-repair-price').value.trim();
+        const price = priceRaw.replace(/,/g, '') || '0';
+
+        if (!repairType) {
+            alert('يرجى إدخال تفاصيل الراجع!');
+            return;
+        }
+
+        const targetItem = allMaintenancesData.find(d => d.id === parentId);
+        if (!targetItem) return;
+
+        let existingReturns = targetItem.returnsHistory || [];
+        existingReturns.push({
+            repairType: repairType,
+            price: price,
+            date: new Date().toISOString()
+        });
+
+        try {
+            const recordRef = ref(db, `maintenances/${parentId}`);
+            await update(recordRef, {
+                returnsHistory: existingReturns
+            });
+            closeReturnModal();
+        } catch (e) {
+            console.error("Return Save Error:", e);
+            alert("فشل حفظ الراجع: " + e.message);
+        }
+    }
+
     window.printReceipt = function(id) {
         const item = allMaintenancesData.find(d => d.id === id);
         if (!item) return;
@@ -658,7 +760,6 @@
         const invNum = item.invoiceNumber || '---';
         const carNum = item.carNumber || '';
         const carModel = item.carModel || '';
-        const customerInfo = item.customerInfo || '';
         const repairType = item.repairType || '';
         const warrantyDays = item.warrantyDays || 0;
         
@@ -667,10 +768,22 @@
         const cleanPriceVal = typeof item.repairPrice === 'string' ? item.repairPrice.replace(/,/g, '') : item.repairPrice;
         const formattedPrice = Number(cleanPriceVal || 0).toLocaleString();
 
+        let returnsHtml = '';
+        let totalReturnsPrice = 0;
+        if (item.returnsHistory && Array.isArray(item.returnsHistory)) {
+            item.returnsHistory.forEach((ret, idx) => {
+                const rPriceClean = typeof ret.price === 'string' ? ret.price.replace(/,/g, '') : ret.price;
+                const rPriceNum = parseFloat(rPriceClean) || 0;
+                totalReturnsPrice += rPriceNum;
+                returnsHtml += `<div class="info-row">راجع (${idx+1}) - ${ret.repairType}: <span>${Number(rPriceNum).toLocaleString()} د.ع</span></div>`;
+            });
+        }
+
+        const grandTotal = (parseFloat(cleanPriceVal) || 0) + totalReturnsPrice;
+
         const printWindow = window.open('', '_blank', 'width=400,height=600');
-        
         if (!printWindow) {
-            alert("يرجى السماح بالنوافذ المنبثقة (Pop-ups) من إعدادات المتصفح لكي تعمل الطباعة بنجاح.");
+            alert("يرجى السماح بالنوافذ المنبثقة من إعدادات المتصفح للطباعة.");
             return;
         }
 
@@ -683,37 +796,37 @@
                 <style>
                     body {
                         font-family: 'Cairo', Tahoma, sans-serif;
-                        padding: 15px;
-                        color: #1e293b;
+                        padding: 10px;
+                        color: #0f172a;
                         background: #fff;
                         direction: rtl;
                         text-align: right;
                         margin: 0;
                     }
                     .receipt-box {
-                        max-width: 350px;
+                        max-width: 320px;
                         margin: 0 auto;
                         border: 2px dashed #cbd5e1;
-                        padding: 15px;
-                        border-radius: 12px;
+                        padding: 12px;
+                        border-radius: 10px;
                     }
                     h2 {
                         text-align: center;
                         margin-bottom: 5px;
                         color: #2563eb;
-                        font-size: 18px;
+                        font-size: 16px;
                     }
                     .sub-title {
                         text-align: center;
-                        font-size: 12px;
+                        font-size: 11px;
                         color: #64748b;
-                        margin-bottom: 15px;
+                        margin-bottom: 12px;
                         border-bottom: 1px solid #e2e8f0;
-                        padding-bottom: 8px;
+                        padding-bottom: 6px;
                     }
                     .info-row {
-                        margin-bottom: 8px;
-                        font-size: 13px;
+                        margin-bottom: 6px;
+                        font-size: 12px;
                         display: flex;
                         justify-content: space-between;
                     }
@@ -721,21 +834,21 @@
                         font-weight: bold;
                     }
                     .price-box {
-                        margin-top: 15px;
+                        margin-top: 12px;
                         border-top: 2px solid #2563eb;
-                        padding-top: 10px;
+                        padding-top: 8px;
                         text-align: center;
-                        font-size: 16px;
+                        font-size: 15px;
                         font-weight: bold;
                         color: #2563eb;
                     }
                     .footer-note {
                         text-align: center;
-                        font-size: 11px;
+                        font-size: 10.5px;
                         color: #64748b;
-                        margin-top: 20px;
+                        margin-top: 15px;
                         border-top: 1px dashed #e2e8f0;
-                        padding-top: 8px;
+                        padding-top: 6px;
                     }
                 </style>
             </head>
@@ -746,15 +859,17 @@
                     
                     <div class="info-row">رقم الفاتورة: <span>#${invNum}</span></div>
                     <div class="info-row">تاريخ الصيانة: <span>${mDate}</span></div>
-                    <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 8px 0;">
+                    <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 6px 0;">
                     <div class="info-row">رقم السيارة: <span>${carNum} (${carModel})</span></div>
-                    <div class="info-row">اسم العميل: <span>${customerInfo}</span></div>
-                    <div class="info-row">نوع التصليح: <span>${repairType}</span></div>
-                    <div class="info-row">مدة الضمان: <span>${warrantyDays} يوم</span></div>
+                    <div class="info-row">التصليح الأساسي: <span>${repairType} (${formattedPrice} د.ع)</span></div>
+                    
+                    ${returnsHtml}
+
+                    <div class="info-row" style="margin-top: 6px; border-top: 1px dashed #e2e8f0; padding-top: 4px;">مدة الضمان: <span>${warrantyDays} يوم</span></div>
                     <div class="info-row">انتهاء الضمان: <span>${eDate}</span></div>
                     
                     <div class="price-box">
-                        المبلغ الإجمالي: ${formattedPrice} د.ع
+                        المبلغ الإجمالي: ${grandTotal.toLocaleString()} د.ع
                     </div>
                     
                     <div class="footer-note">
@@ -787,8 +902,6 @@
             (item.invoiceNumber && item.invoiceNumber.toString().includes(queryVal)) ||
             (item.carNumber && item.carNumber.toLowerCase().includes(queryVal)) ||
             (item.carModel && item.carModel.toLowerCase().includes(queryVal)) ||
-            (item.customerInfo && item.customerInfo.toLowerCase().includes(queryVal)) ||
-            (item.customerPhone && item.customerPhone.includes(queryVal)) ||
             (item.repairType && item.repairType.toLowerCase().includes(queryVal))
         );
 
@@ -799,8 +912,6 @@
         const statusP = document.getElementById('save-status');
         const carNumber = document.getElementById('carNumber').value.trim();
         const carModel = document.getElementById('carModel').value.trim();
-        const customerInfo = document.getElementById('customerInfo').value.trim();
-        const customerPhone = document.getElementById('customerPhone').value.trim();
         const repairType = document.getElementById('repairType').value.trim();
         const repairPriceRaw = document.getElementById('repairPrice').value.trim();
         const repairPrice = repairPriceRaw.replace(/,/g, '');
@@ -813,7 +924,7 @@
             return;
         }
 
-        statusP.style.color = "blue";
+        statusP.style.color = "var(--primary)";
         statusP.innerText = "جاري الحفظ وتوليد الفاتورة...";
 
         let nextInvoiceNumber = 1001;
@@ -831,22 +942,21 @@
                 invoiceNumber: nextInvoiceNumber,
                 carNumber: carNumber,
                 carModel: carModel || 'غير محدد',
-                customerInfo: customerInfo || 'غير محدد',
-                customerPhone: customerPhone,
+                customerInfo: 'غير محدد',
+                customerPhone: '',
                 repairType: repairType,
                 repairPrice: repairPrice || '0',
                 maintenanceDate: mDate.toISOString(),
                 expiryDate: expiryDate.toISOString(),
-                warrantyDays: finalWarrantyDays
+                warrantyDays: finalWarrantyDays,
+                returnsHistory: []
             });
             
-            statusP.style.color = "green";
+            statusP.style.color = "var(--success-dark)";
             statusP.innerText = `✓ تم حفظ الفاتورة رقم #${nextInvoiceNumber} بنجاح!`;
             
             document.getElementById('carNumber').value = '';
             document.getElementById('carModel').value = '';
-            document.getElementById('customerInfo').value = '';
-            document.getElementById('customerPhone').value = '';
             document.getElementById('repairType').value = '';
             document.getElementById('repairPrice').value = '';
             document.getElementById('warrantyDays').value = '30';
@@ -854,7 +964,7 @@
             setTimeout(() => { statusP.innerText = ''; }, 3000);
         } catch (e) {
             console.error("Save Error:", e);
-            statusP.style.color = "red";
+            statusP.style.color = "var(--danger)";
             statusP.innerText = "❌ فشل الحفظ: " + e.message;
         }
     }
@@ -878,8 +988,6 @@
         document.getElementById('modal-inv-label').innerText = item.invoiceNumber || '';
         document.getElementById('edit-carNumber').value = item.carNumber || '';
         document.getElementById('edit-carModel').value = item.carModel || '';
-        document.getElementById('edit-customerInfo').value = item.customerInfo || '';
-        document.getElementById('edit-customerPhone').value = item.customerPhone || '';
         document.getElementById('edit-repairType').value = item.repairType || '';
         
         const rawPrice = item.repairPrice ? item.repairPrice.toString().replace(/,/g, '') : '';
@@ -898,8 +1006,6 @@
         const id = document.getElementById('edit-id').value;
         const newCar = document.getElementById('edit-carNumber').value.trim();
         const newModel = document.getElementById('edit-carModel').value.trim();
-        const newCust = document.getElementById('edit-customerInfo').value.trim();
-        const newPhone = document.getElementById('edit-customerPhone').value.trim();
         const newRepair = document.getElementById('edit-repairType').value.trim();
         const newPriceRaw = document.getElementById('edit-repairPrice').value.trim();
         const newPrice = newPriceRaw.replace(/,/g, '');
@@ -921,8 +1027,6 @@
             await update(recordRef, {
                 carNumber: newCar,
                 carModel: newModel || 'غير محدد',
-                customerInfo: newCust || 'غير محدد',
-                customerPhone: newPhone,
                 repairType: newRepair,
                 repairPrice: newPrice || '0',
                 expiryDate: newExpiryDate.toISOString(),
