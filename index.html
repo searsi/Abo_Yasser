@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>محل أبو ياسر - نظام إدارة الصيانات والفواتير</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #3b82f6;
-            --primary-dark: #1d4ed8;
-            --success: #10b981;
-            --success-dark: #059669;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --bg-color: #f1f5f9;
+            --primary: #4f46e5;
+            --primary-light: #e0e7ff;
+            --primary-dark: #3730a3;
+            --success: #059669;
+            --success-light: #d1fae5;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --warning: #d97706;
+            --warning-light: #fef3c7;
+            --bg-color: #f8fafc;
             --card-bg: #ffffff;
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
-            --radius: 16px;
+            --radius: 20px;
+            --radius-sm: 12px;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -30,9 +35,9 @@
             font-family: 'Cairo', sans-serif;
             background: var(--bg-color);
             margin: 0;
-            padding: 10px;
+            padding: 15px;
             color: var(--text-main);
-            overflow-x: hidden;
+            min-height: 100vh;
         }
 
         .container { 
@@ -45,95 +50,145 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: var(--card-bg);
-            padding: 15px;
+            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+            color: white;
+            padding: 24px;
             border-radius: var(--radius);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
-            margin-bottom: 15px;
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.3);
+            margin-bottom: 24px;
             flex-wrap: wrap;
-            gap: 12px;
-            border: 1px solid rgba(226, 232, 240, 0.8);
+            gap: 15px;
         }
 
         .dashboard-header h2 {
             margin: 0;
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 800;
-            color: var(--text-main);
             display: flex;
             align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .connection-status {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 11px;
+            gap: 8px;
+            font-size: 12px;
             font-weight: 600;
-            background: #f8fafc;
-            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            padding: 8px 16px;
             border-radius: 30px;
-            border: 1px solid var(--border-color);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
         }
 
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background-color: #cbd5e1;
             display: inline-block;
         }
 
-        .status-dot.online { background-color: var(--success); box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
-        .status-dot.offline { background-color: var(--danger); box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+        .status-dot.online { background-color: #34d399; box-shadow: 0 0 12px rgba(52, 211, 153, 0.8); }
+        .status-dot.offline { background-color: #f87171; box-shadow: 0 0 12px rgba(248, 113, 113, 0.8); }
 
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 480px) {
-            .stats-bar {
-                grid-template-columns: 1fr;
-            }
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
         .stat-box {
             background: var(--card-bg);
-            padding: 12px;
+            padding: 20px;
             border-radius: var(--radius);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
             text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
         }
-        
-        .stat-box h4 { margin: 0; font-size: 11px; color: var(--text-muted); font-weight: 600; }
-        .stat-box p { margin: 6px 0 0; font-size: 16px; font-weight: 800; color: var(--primary); word-break: break-all; }
+
+        .stat-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-box h4 { margin: 0; font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-box p { margin: 10px 0 0; font-size: 20px; font-weight: 900; color: var(--primary); }
 
         .card {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-            margin-bottom: 15px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
             border: 1px solid var(--border-color);
         }
 
         .card h3 {
             margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 15px;
-            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 17px;
+            font-weight: 800;
             color: var(--text-main);
             border-bottom: 2px solid var(--bg-color);
-            padding-bottom: 8px;
+            padding-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
+        }
+
+        /* تصميم مميز وجذاب لخيار البحث البارز */
+        .search-highlight-card {
+            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+            border: 2px solid #818cf8;
+            box-shadow: 0 12px 30px -10px rgba(79, 70, 229, 0.2);
+        }
+
+        .search-highlight-card h3 {
+            color: var(--primary-dark);
+            border-bottom-color: #cbd5e1;
+        }
+
+        .search-box-wrapper {
+            position: relative;
+        }
+
+        .search-box-wrapper input {
+            background: #ffffff !important;
+            border: 2px solid var(--primary) !important;
+            font-size: 16px !important;
+            font-weight: 700;
+            padding-right: 45px !important;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+        }
+
+        .search-box-wrapper input:focus {
+            box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.2) !important;
+        }
+
+        .search-icon-abs {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            pointer-events: none;
         }
 
         .grid-2 { 
@@ -145,81 +200,92 @@
         @media (min-width: 600px) {
             .grid-2 { 
                 grid-template-columns: 1fr 1fr; 
-                gap: 12px; 
+                gap: 20px; 
             }
             body {
-                padding: 20px;
-            }
-            .card {
-                padding: 20px;
-            }
-            .dashboard-header {
-                padding: 20px;
+                padding: 30px;
             }
         }
 
-        .form-group { margin-bottom: 14px; text-align: right; }
+        .form-group { margin-bottom: 18px; text-align: right; }
 
-        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 12.5px; color: #334155; }
+        label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 13px; color: #334155; }
 
         input, select {
             width: 100%;
-            padding: 11px 12px;
+            padding: 14px 16px;
             box-sizing: border-box;
-            border: 1.5px solid var(--border-color);
-            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
             font-family: 'Cairo', sans-serif;
             font-size: 14px;
-            background: #ffffff;
+            background: #f8fafc;
             color: var(--text-main);
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             -webkit-appearance: none;
         }
 
         input:focus, select:focus { 
             outline: none; 
             border-color: var(--primary); 
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); 
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); 
         }
 
         .quick-models {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
-            margin-top: 8px;
+            margin-top: 10px;
         }
+
         .badge-model {
-            background: #f1f5f9;
-            border: 1px solid var(--border-color);
-            padding: 5px 10px;
+            background: var(--primary-light);
+            border: 1px solid #c7d2fe;
+            padding: 6px 14px;
             border-radius: 8px;
-            font-size: 11.5px;
+            font-size: 12px;
             cursor: pointer;
             font-family: 'Cairo', sans-serif;
-            font-weight: 600;
-            color: #475569;
+            font-weight: 700;
+            color: var(--primary-dark);
             width: auto;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
-        .badge-model:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .badge-model:hover { 
+            background: var(--primary); 
+            color: white; 
+            border-color: var(--primary); 
+            transform: translateY(-1px);
+        }
 
         button {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 16px;
+            padding: 14px 24px;
             cursor: pointer;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             font-family: 'Cairo', sans-serif;
-            font-weight: 700;
-            font-size: 14px;
+            font-weight: 800;
+            font-size: 15px;
             width: 100%;
-            transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
         }
-        button:hover { background: var(--primary-dark); }
 
-        .btn-secondary { background: #64748b; width: auto; box-shadow: none; }
+        button:hover { 
+            background: var(--primary-dark); 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.35);
+        }
+
+        .btn-secondary { 
+            background: #64748b; 
+            width: auto; 
+            box-shadow: none; 
+        }
         .btn-secondary:hover { background: #475569; }
 
         .hidden { display: none !important; }
@@ -230,74 +296,82 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(6px);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 10px;
+            padding: 15px;
             box-sizing: border-box;
         }
+
         .modal-card {
             background: #ffffff;
             border-radius: var(--radius);
-            padding: 15px;
+            padding: 24px;
             width: 100%;
-            max-width: 500px;
+            max-width: 550px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             border: 1px solid var(--border-color);
+            animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @media (min-width: 600px) {
-            .modal-card {
-                padding: 25px;
-            }
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .result-card {
             background: #ffffff;
             border: 1px solid var(--border-color);
-            border-right: 4px solid var(--primary);
-            padding: 15px;
-            margin-top: 12px;
+            border-right: 6px solid var(--primary);
+            padding: 20px;
+            margin-top: 16px;
             border-radius: var(--radius);
             text-align: right;
             position: relative;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
             transition: all 0.2s ease;
         }
-        .result-card p { margin: 5px 0; font-size: 13px; word-break: break-word; color: #334155; }
+
+        .result-card:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.06); 
+            border-color: #cbd5e1;
+            border-right-color: var(--primary);
+        }
+
+        .result-card p { margin: 8px 0; font-size: 14px; word-break: break-word; color: #334155; }
 
         .invoice-badge {
-            background: #eff6ff;
-            color: var(--primary);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 11.5px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 12px;
             display: inline-block;
-            margin-bottom: 8px;
-            border: 1px solid #dbeafe;
+            margin-bottom: 12px;
+            border: 1px solid #c7d2fe;
         }
 
-        /* تعديل جوهري لتصميم الأزرار داخل الكارت لكي تتطابق تماماً مع الشاشات الصغيرة */
         .card-top-actions {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             flex-wrap: wrap;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             border-bottom: 1px solid var(--bg-color);
-            padding-bottom: 8px;
+            padding-bottom: 10px;
         }
 
-        @media (min-width: 550px) {
+        @media (min-width: 600px) {
             .card-top-actions {
                 position: absolute;
-                top: 15px;
-                left: 15px;
+                top: 20px;
+                left: 20px;
                 margin-bottom: 0;
                 border-bottom: none;
                 padding-bottom: 0;
@@ -307,16 +381,16 @@
         .icon-btn {
             background: #f8fafc;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 11.5px;
+            font-size: 12px;
             font-family: 'Cairo', sans-serif;
-            font-weight: 600;
-            transition: all 0.2s;
+            font-weight: 700;
+            transition: all 0.2s ease;
             color: #334155;
             text-decoration: none;
             box-shadow: none;
@@ -324,49 +398,47 @@
             flex: 1;
         }
 
-        @media (min-width: 550px) {
-            .icon-btn {
-                flex: unset;
-            }
+        @media (min-width: 600px) {
+            .icon-btn { flex: unset; }
         }
 
-        .icon-btn.edit:hover { background: #fef3c7; border-color: var(--warning); color: #d97706; }
-        .icon-btn.delete:hover { background: #fee2e2; border-color: var(--danger); color: var(--danger); }
-        .icon-btn.print:hover { background: #eff6ff; border-color: var(--primary); color: var(--primary); }
-        .icon-btn.return-btn { background: #ecfdf5; border-color: var(--success); color: var(--success-dark); }
-        .icon-btn.return-btn:hover { background: #d1fae5; }
+        .icon-btn.edit:hover { background: var(--warning-light); border-color: var(--warning); color: var(--warning); }
+        .icon-btn.delete:hover { background: var(--danger-light); border-color: var(--danger); color: var(--danger); }
+        .icon-btn.print:hover { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+        .icon-btn.return-btn { background: var(--success-light); border-color: var(--success); color: var(--success); }
 
         .returns-history-box {
             background: #f8fafc;
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            margin-top: 14px;
             border: 1px dashed #cbd5e1;
         }
+
         .returns-history-box h5 {
-            margin: 0 0 6px 0;
-            color: var(--success-dark);
-            font-size: 12px;
-            font-weight: 700;
+            margin: 0 0 10px 0;
+            color: var(--success);
+            font-size: 13px;
+            font-weight: 800;
         }
+
         .return-item-row {
             background: #ffffff;
-            padding: 6px 10px;
-            border-radius: 6px;
-            margin-bottom: 5px;
-            font-size: 12px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 1px solid var(--border-color);
         }
-        .return-item-row:last-child {
-            margin-bottom: 0;
-        }
+        
+        .return-item-row:last-child { margin-bottom: 0; }
 
-        .active-warranty { color: var(--success-dark); font-weight: 700; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; display: inline-block; border: 1px solid #a7f3d0;}
-        .expired-warranty { color: var(--danger); font-weight: 700; background: #fef2f2; padding: 2px 6px; border-radius: 4px; display: inline-block; border: 1px solid #fecaca;}
-        .error-msg { color: var(--danger); font-size: 11.5px; margin-top: 5px; font-weight: 600; }
+        .active-warranty { color: var(--success); font-weight: 800; background: var(--success-light); padding: 4px 10px; border-radius: 6px; display: inline-block; border: 1px solid #a7f3d0;}
+        .expired-warranty { color: var(--danger); font-weight: 800; background: var(--danger-light); padding: 4px 10px; border-radius: 6px; display: inline-block; border: 1px solid #fecaca;}
+        .error-msg { color: var(--danger); font-size: 13px; margin-top: 8px; font-weight: 700; }
     </style>
 </head>
 <body>
@@ -375,7 +447,7 @@
     <!-- لوحة التحكم -->
     <div id="dashboard-section">
         <div class="dashboard-header">
-            <h2>🚗 محل أبو ياسر <span style="font-size: 12px; font-weight: 400; color: var(--text-muted);">| إدارة الصيانات</span></h2>
+            <h2>🚗 محل أبو ياسر <span style="font-size: 13px; font-weight: 400; opacity: 0.9;">| إدارة الصيانات والفواتير</span></h2>
             <div class="connection-status">
                 <span id="status-dot" class="status-dot"></span>
                 <span id="status-text">جاري الاتصال...</span>
@@ -392,7 +464,7 @@
                 <h4>إجمالي الفواتير</h4>
                 <p id="stat-total-count">0</p>
             </div>
-            <div class="stat-box">
+            <div class="stat-box" style="--primary: #dc2626;">
                 <h4>ضمانات منتهية</h4>
                 <p id="stat-expired-count" style="color: var(--danger);">0</p>
             </div>
@@ -438,20 +510,23 @@
                     <input type="number" id="warrantyDays" value="30">
                 </div>
             </div>
-            <button onclick="saveMaintenance()" style="margin-top: 5px;">💾 حفظ الفاتورة أونلاين</button>
-            <p id="save-status" style="margin-top: 8px; font-weight: bold; font-size: 12px; text-align: center;"></p>
+            <button onclick="saveMaintenance()" style="margin-top: 10px;">💾 حفظ الفاتورة أونلاين</button>
+            <p id="save-status" style="margin-top: 12px; font-weight: 800; font-size: 13px; text-align: center;"></p>
         </div>
 
-        <!-- البحث والتزامن المباشر -->
-        <div class="card" id="search-card-wrapper">
-            <h3>🔍 البحث السريع عن السجلات</h3>
+        <!-- البحث والتزامن المباشر (بتصميم مميز جداً وبارز) -->
+        <div class="card search-highlight-card" id="search-card-wrapper">
+            <h3>🔍 البحث السريع عن السجلات والفواتير</h3>
             <div class="form-group" style="margin-bottom: 0;">
-                <label>ابحث برقم الفاتورة، رقم السيارة، الموديل، أو نوع التصليح:</label>
-                <input type="text" id="searchCarNumber" placeholder="اكتب للبحث الفوري..." oninput="filterRecords()">
+                <label style="color: var(--primary-dark); font-size: 14px;">ابحث برقم الفاتورة، رقم السيارة، الموديل، أو نوع التصليح:</label>
+                <div class="search-box-wrapper">
+                    <input type="text" id="searchCarNumber" placeholder="ابحث هنا عن أي سيارة أو فاتورة..." oninput="filterRecords()">
+                    <span class="search-icon-abs">🔎</span>
+                </div>
             </div>
             <!-- الحاوية لعرض السجلات -->
-            <div id="live-records-container" style="margin-top: 12px;">
-                <p style="color: var(--primary); text-align: center; padding: 15px;">جاري جلب وتزامن البيانات من قاعدة البيانات...</p>
+            <div id="live-records-container" style="margin-top: 20px;">
+                <p style="color: var(--primary); text-align: center; padding: 25px; font-weight: 700;">جاري جلب وتزامن البيانات من قاعدة البيانات...</p>
             </div>
         </div>
     </div>
@@ -460,20 +535,20 @@
 <!-- نافذة إضافة الراجع داخل الفاتورة -->
 <div id="return-modal" class="modal-overlay hidden">
     <div class="modal-card">
-        <h3 style="color: var(--success-dark); border-bottom: 2px solid var(--bg-color); padding-bottom: 8px; margin-top: 0; font-size: 15px;">🔄 إضافة سجل "راجع" للفاتورة رقم <span id="return-inv-label"></span></h3>
+        <h3 style="color: var(--success); border-bottom: 2px solid var(--bg-color); padding-bottom: 12px; margin-top: 0; font-size: 16px;">🔄 إضافة سجل "راجع (إعادة تصليح)" للفاتورة رقم <span id="return-inv-label"></span></h3>
         <input type="hidden" id="return-parent-id">
         
         <div class="form-group">
-            <label>تفاصيل الراجع / سبب المراجعة أو الإصلاح</label>
-            <input type="text" id="return-repair-type" placeholder="مثلاً: مراجعة تبديل فيت بَم...">
+            <label>تفاصيل الراجع / سبب المراجعة أو الإصلاح الجديد</label>
+            <input type="text" id="return-repair-type" placeholder="مثلاً: مراجعة تبديل فيت بَم أو صيانة إضافية...">
         </div>
         <div class="form-group">
-            <label>تكلفة الراجع / أجور إضافية (د.ع)</label>
+            <label>تكلفة الراجع / أجور الإصلاح الإضافية (د.ع)</label>
             <input type="text" id="return-repair-price" placeholder="0" oninput="formatPriceInput(this)">
         </div>
 
-        <div style="display: flex; gap: 8px; margin-top: 15px;">
-            <button onclick="saveReturnRecord()" style="flex: 1; background: var(--success);">💾 حفظ الراجع</button>
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+            <button onclick="saveReturnRecord()" style="flex: 1; background: var(--success);">💾 حفظ الراجع داخل الفاتورة</button>
             <button class="btn-secondary" onclick="closeReturnModal()" style="flex: 1;">إلغاء</button>
         </div>
     </div>
@@ -482,7 +557,7 @@
 <!-- نافذة تعديل الفاتورة الأساسية -->
 <div id="edit-modal" class="modal-overlay hidden">
     <div class="modal-card">
-        <h3 style="color: var(--primary); border-bottom: 2px solid var(--bg-color); padding-bottom: 8px; margin-top: 0; font-size: 15px;">✏️ تعديل تفاصيل الفاتورة رقم <span id="modal-inv-label"></span></h3>
+        <h3 style="color: var(--primary); border-bottom: 2px solid var(--bg-color); padding-bottom: 12px; margin-top: 0; font-size: 16px;">✏️ تعديل تفاصيل الفاتورة رقم <span id="modal-inv-label"></span></h3>
         <input type="hidden" id="edit-id">
         
         <div class="grid-2">
@@ -510,7 +585,7 @@
             <input type="number" id="edit-warrantyDays">
         </div>
 
-        <div style="display: flex; gap: 8px; margin-top: 15px;">
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
             <button onclick="saveEditedRecord()" style="flex: 1;">💾 حفظ التعديلات</button>
             <button class="btn-secondary" onclick="closeEditModal()" style="flex: 1;">إلغاء</button>
         </div>
@@ -632,7 +707,7 @@
         const container = document.getElementById('live-records-container');
 
         if (dataList.length === 0) {
-            container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 15px; font-size: 12.5px;">لا توجد أي فواتير مسجلة حتى الآن.</p>';
+            container.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 25px; font-size: 14px; font-weight: 700;">لا توجد أي فواتير مسجلة حتى الآن.</p>';
             return;
         }
 
@@ -659,18 +734,18 @@
 
             html += `<div class="result-card" id="card-${data.id}">
                 <div class="card-top-actions">
-                    <button class="icon-btn return-btn" title="إضافة راجع" onclick="openReturnModal('${data.id}')">🔄 الراجع</button>
-                    <button class="icon-btn print" title="طباعة" onclick="printReceipt('${data.id}')">🖨️ طباعة</button>
-                    <button class="icon-btn edit" title="تعديل" onclick="openEditModal('${data.id}')">✏️ تعديل</button>
-                    <button class="icon-btn delete" title="حذف" onclick="deleteRecord('${data.id}')">🗑️ حذف</button>
+                    <button class="icon-btn return-btn" title="إضافة راجع داخل الفاتورة" onclick="openReturnModal('${data.id}')">🔄 الراجع</button>
+                    <button class="icon-btn print" title="طباعة وصل" onclick="printReceipt('${data.id}')">🖨️ طباعة</button>
+                    <button class="icon-btn edit" title="تعديل السجل" onclick="openEditModal('${data.id}')">✏️ تعديل</button>
+                    <button class="icon-btn delete" title="حذف السجل" onclick="deleteRecord('${data.id}')">🗑️ حذف</button>
                 </div>
 
                 <div class="invoice-badge">📄 رقم الفاتورة: #${invNum}</div>
-                <p style="font-size: 13.5px; color: var(--primary); font-weight: 700;"><strong>رقم السيارة:</strong> ${data.carNumber} <span style="color: var(--text-muted); font-weight: 600;">${carModelText}</span></p>
+                <p style="font-size: 15px; color: var(--primary); font-weight: 800;"><strong>رقم السيارة:</strong> ${data.carNumber} <span style="color: var(--text-muted); font-weight: 700;">${carModelText}</span></p>
                 <p><strong>نوع التصليح الأساسي:</strong> ${data.repairType}</p>
-                <p><strong>تكلفة الصيانة الأساسية:</strong> <span style="color: var(--primary); font-weight: 700;">${formattedPriceDisplay} د.ع</span></p>
+                <p><strong>تكلفة الصيانة الأساسية:</strong> <span style="color: var(--primary); font-weight: 800;">${formattedPriceDisplay} د.ع</span></p>
                 <p><strong>تاريخ الصيانة:</strong> ${mDateFormatted}</p>
-                <p><strong>انتهاء الضمان:</strong> ${eDateFormatted} (${warrantyDays} يوم)</p>
+                <p><strong>تاريخ انتهاء الضمان:</strong> ${eDateFormatted} (${warrantyDays} يوم ضمان)</p>
                 <p><strong>حالة الضمان:</strong> `;
             
             if (warrantyDays === 0) {
@@ -685,14 +760,14 @@
 
             if (data.returnsHistory && Array.isArray(data.returnsHistory) && data.returnsHistory.length > 0) {
                 html += `<div class="returns-history-box">
-                    <h5>📋 سجل المراجعات (الراجع):</h5>`;
+                    <h5>📋 سجل المراجعات (الراجع) المرتبطة بهذه الفاتورة:</h5>`;
                 data.returnsHistory.forEach((ret, index) => {
                     const retPriceClean = typeof ret.price === 'string' ? ret.price.replace(/,/g, '') : ret.price;
                     const retPriceFormatted = Number(retPriceClean || 0).toLocaleString();
                     const retDate = new Date(ret.date).toLocaleDateString('ar-IQ');
                     html += `<div class="return-item-row">
                         <span><strong>#${index + 1}</strong> - ${ret.repairType} <span style="color: var(--text-muted);">(${retDate})</span></span>
-                        <span style="color: var(--success-dark); font-weight: 700;">${retPriceFormatted} د.ع</span>
+                        <span style="color: var(--success); font-weight: 800;">${retPriceFormatted} د.ع</span>
                     </div>`;
                 });
                 html += `</div>`;
@@ -796,7 +871,7 @@
                 <style>
                     body {
                         font-family: 'Cairo', Tahoma, sans-serif;
-                        padding: 10px;
+                        padding: 15px;
                         color: #0f172a;
                         background: #fff;
                         direction: rtl;
@@ -804,29 +879,29 @@
                         margin: 0;
                     }
                     .receipt-box {
-                        max-width: 320px;
+                        max-width: 350px;
                         margin: 0 auto;
                         border: 2px dashed #cbd5e1;
-                        padding: 12px;
-                        border-radius: 10px;
+                        padding: 15px;
+                        border-radius: 12px;
                     }
                     h2 {
                         text-align: center;
                         margin-bottom: 5px;
-                        color: #2563eb;
-                        font-size: 16px;
+                        color: #4f46e5;
+                        font-size: 18px;
                     }
                     .sub-title {
                         text-align: center;
-                        font-size: 11px;
+                        font-size: 12px;
                         color: #64748b;
-                        margin-bottom: 12px;
+                        margin-bottom: 15px;
                         border-bottom: 1px solid #e2e8f0;
-                        padding-bottom: 6px;
+                        padding-bottom: 8px;
                     }
                     .info-row {
-                        margin-bottom: 6px;
-                        font-size: 12px;
+                        margin-bottom: 8px;
+                        font-size: 13px;
                         display: flex;
                         justify-content: space-between;
                     }
@@ -834,21 +909,21 @@
                         font-weight: bold;
                     }
                     .price-box {
-                        margin-top: 12px;
-                        border-top: 2px solid #2563eb;
-                        padding-top: 8px;
+                        margin-top: 15px;
+                        border-top: 2px solid #4f46e5;
+                        padding-top: 10px;
                         text-align: center;
-                        font-size: 15px;
+                        font-size: 16px;
                         font-weight: bold;
-                        color: #2563eb;
+                        color: #4f46e5;
                     }
                     .footer-note {
                         text-align: center;
-                        font-size: 10.5px;
+                        font-size: 11px;
                         color: #64748b;
-                        margin-top: 15px;
+                        margin-top: 20px;
                         border-top: 1px dashed #e2e8f0;
-                        padding-top: 6px;
+                        padding-top: 8px;
                     }
                 </style>
             </head>
@@ -859,17 +934,17 @@
                     
                     <div class="info-row">رقم الفاتورة: <span>#${invNum}</span></div>
                     <div class="info-row">تاريخ الصيانة: <span>${mDate}</span></div>
-                    <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 6px 0;">
+                    <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 8px 0;">
                     <div class="info-row">رقم السيارة: <span>${carNum} (${carModel})</span></div>
                     <div class="info-row">التصليح الأساسي: <span>${repairType} (${formattedPrice} د.ع)</span></div>
                     
                     ${returnsHtml}
 
-                    <div class="info-row" style="margin-top: 6px; border-top: 1px dashed #e2e8f0; padding-top: 4px;">مدة الضمان: <span>${warrantyDays} يوم</span></div>
+                    <div class="info-row" style="margin-top: 8px; border-top: 1px dashed #e2e8f0; padding-top: 6px;">مدة الضمان الأساسي: <span>${warrantyDays} يوم</span></div>
                     <div class="info-row">انتهاء الضمان: <span>${eDate}</span></div>
                     
                     <div class="price-box">
-                        المبلغ الإجمالي: ${grandTotal.toLocaleString()} د.ع
+                        المبلغ الإجمالي الكلي: ${grandTotal.toLocaleString()} د.ع
                     </div>
                     
                     <div class="footer-note">
@@ -952,7 +1027,7 @@
                 returnsHistory: []
             });
             
-            statusP.style.color = "var(--success-dark)";
+            statusP.style.color = "var(--success)";
             statusP.innerText = `✓ تم حفظ الفاتورة رقم #${nextInvoiceNumber} بنجاح!`;
             
             document.getElementById('carNumber').value = '';
