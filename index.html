@@ -7,23 +7,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #3b82f6;
-            --primary-light: #eff6ff;
-            --primary-dark: #1d4ed8;
-            --success: #059669;
+            --primary: #4f46e5;
+            --primary-light: #e0e7ff;
+            --primary-dark: #3730a3;
+            --success: #10b981;
             --success-light: #d1fae5;
-            --danger: #dc2626;
+            --danger: #ef4444;
             --danger-light: #fee2e2;
-            --warning: #d97706;
+            --warning: #f59e0b;
             --warning-light: #fef3c7;
-            --bg-color: #f1f5f9;
+            --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            --border-color: #cbd5e1;
-            --radius: 16px;
-            --radius-sm: 10px;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --radius: 18px;
+            --radius-sm: 12px;
+            --shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
         }
 
         * {
@@ -38,7 +38,7 @@
             padding: 20px;
             color: var(--text-main);
             min-height: 100vh;
-            font-size: 16px; /* تكبير الخط العام */
+            font-size: 16px;
         }
 
         .container { 
@@ -51,11 +51,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
             color: white;
-            padding: 24px 28px;
+            padding: 26px 30px;
             border-radius: var(--radius);
-            box-shadow: 0 10px 20px -5px rgba(30, 58, 138, 0.3);
+            box-shadow: 0 15px 30px -10px rgba(67, 56, 202, 0.3);
             margin-bottom: 24px;
             flex-wrap: wrap;
             gap: 15px;
@@ -63,7 +63,7 @@
 
         .dashboard-header h2 {
             margin: 0;
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -76,11 +76,11 @@
             gap: 10px;
             font-size: 14px;
             font-weight: 700;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
             padding: 10px 18px;
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
         }
 
@@ -97,14 +97,14 @@
 
         .stats-bar {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
             margin-bottom: 24px;
         }
 
         .stat-box {
             background: var(--card-bg);
-            padding: 22px;
+            padding: 24px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             border: 1px solid var(--border-color);
@@ -119,20 +119,19 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 5px;
+            width: 6px;
             height: 100%;
             background: var(--primary);
         }
 
         .stat-box:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.08);
         }
 
         .stat-box h4 { margin: 0; font-size: 14px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stat-box p { margin: 12px 0 0; font-size: 24px; font-weight: 900; color: var(--primary-dark); }
+        .stat-box p { margin: 12px 0 0; font-size: 26px; font-weight: 900; color: var(--primary-dark); }
 
-        /* زر فتح نموذج الفاتورة الجديدة الرئيسي */
         .toggle-add-btn {
             background: linear-gradient(135deg, #059669 0%, #047857 100%);
             color: white;
@@ -143,7 +142,7 @@
             border-radius: var(--radius);
             width: 100%;
             cursor: pointer;
-            box-shadow: 0 8px 20px -4px rgba(5, 150, 105, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.3);
             margin-bottom: 24px;
             display: flex;
             align-items: center;
@@ -156,13 +155,13 @@
         .toggle-add-btn:hover {
             background: linear-gradient(135deg, #047857 0%, #065f46 100%);
             transform: translateY(-2px);
-            box-shadow: 0 12px 25px -5px rgba(5, 150, 105, 0.4);
+            box-shadow: 0 15px 30px -5px rgba(5, 150, 105, 0.4);
         }
 
         .card {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 28px;
+            padding: 30px;
             box-shadow: var(--shadow);
             margin-bottom: 24px;
             border: 1px solid var(--border-color);
@@ -171,7 +170,7 @@
         .card h3 {
             margin-top: 0;
             margin-bottom: 22px;
-            font-size: 19px;
+            font-size: 20px;
             font-weight: 800;
             color: var(--text-main);
             border-bottom: 2px solid var(--bg-color);
@@ -181,16 +180,15 @@
             gap: 12px;
         }
 
-        /* تصميم مميز وجذاب لخيار البحث البارز */
         .search-highlight-card {
-            background: linear-gradient(135deg, #e0f2fe 0%, #f8fafc 100%);
-            border: 2px solid #38bdf8;
-            box-shadow: 0 12px 30px -10px rgba(56, 189, 248, 0.25);
+            background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%);
+            border: 2px solid #818cf8;
+            box-shadow: 0 15px 35px -10px rgba(129, 140, 248, 0.2);
         }
 
         .search-highlight-card h3 {
-            color: #0369a1;
-            border-bottom-color: #bae6fd;
+            color: #4338ca;
+            border-bottom-color: #c7d2fe;
         }
 
         .search-box-wrapper {
@@ -203,11 +201,11 @@
             font-size: 17px !important;
             font-weight: 700;
             padding-right: 50px !important;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.1);
         }
 
         .search-box-wrapper input:focus {
-            box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.25) !important;
+            box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.2) !important;
         }
 
         .search-icon-abs {
@@ -237,7 +235,7 @@
 
         .form-group { margin-bottom: 20px; text-align: right; }
 
-        label { display: block; margin-bottom: 8px; font-weight: 800; font-size: 15px; color: #1e293b; }
+        label { display: block; margin-bottom: 8px; font-weight: 800; font-size: 15px; color: #334155; }
 
         input, select {
             width: 100%;
@@ -258,19 +256,19 @@
             outline: none; 
             border-color: var(--primary); 
             background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); 
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); 
         }
 
         .quick-models {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         .badge-model {
             background: var(--primary-light);
-            border: 1px solid #bfdbfe;
+            border: 1px solid #c7d2fe;
             padding: 8px 16px;
             border-radius: 8px;
             font-size: 14px;
@@ -301,13 +299,13 @@
             font-size: 17px;
             width: 100%;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
         }
 
         button:hover { 
             background: var(--primary-dark); 
             transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
         }
 
         .btn-secondary { 
@@ -325,8 +323,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(6px);
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -338,7 +336,7 @@
         .modal-card {
             background: #ffffff;
             border-radius: var(--radius);
-            padding: 28px;
+            padding: 30px;
             width: 100%;
             max-width: 580px;
             max-height: 90vh;
@@ -357,19 +355,19 @@
             background: #ffffff;
             border: 1px solid var(--border-color);
             border-right: 6px solid var(--primary);
-            padding: 22px;
+            padding: 24px;
             margin-top: 18px;
             border-radius: var(--radius);
             text-align: right;
             position: relative;
-            box-shadow: 0 4px 8px -2px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 12px -2px rgba(0,0,0,0.03);
             transition: all 0.2s ease;
         }
 
         .result-card:hover { 
             transform: translateY(-2px); 
-            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.08); 
-            border-color: #94a3b8;
+            box-shadow: 0 12px 25px -5px rgba(0,0,0,0.08); 
+            border-color: #cbd5e1;
             border-right-color: var(--primary);
         }
 
@@ -384,7 +382,7 @@
             font-size: 14px;
             display: inline-block;
             margin-bottom: 12px;
-            border: 1px solid #bfdbfe;
+            border: 1px solid #c7d2fe;
         }
 
         .card-top-actions {
@@ -399,8 +397,8 @@
         @media (min-width: 600px) {
             .card-top-actions {
                 position: absolute;
-                top: 22px;
-                left: 22px;
+                top: 24px;
+                left: 24px;
                 margin-bottom: 0;
                 border-bottom: none;
                 padding-bottom: 0;
@@ -441,7 +439,7 @@
             border-radius: var(--radius-sm);
             padding: 16px;
             margin-top: 16px;
-            border: 1px dashed #94a3b8;
+            border: 1px dashed #cbd5e1;
         }
 
         .returns-history-box h5 {
@@ -454,7 +452,7 @@
         .return-item-row {
             background: #ffffff;
             padding: 12px 16px;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 10px;
             font-size: 15px;
             display: flex;
@@ -484,17 +482,13 @@
             </div>
         </div>
 
-        <!-- شريط الإحصائيات -->
-        <div class="stats-bar">
+        <!-- شريط الإحصائيات (تم إلغاء حقل إجمالي الإيرادات تماماً مع الاحتفاظ بالبيانات) -->
+        <div class="stats-bar" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
             <div class="stat-box">
-                <h4>إجمالي الإيرادات</h4>
-                <p id="stat-total-revenue">0 د.ع</p>
-            </div>
-            <div class="stat-box">
-                <h4>إجمالي الفواتير</h4>
+                <h4>إجمالي الفواتير المسجلة</h4>
                 <p id="stat-total-count">0</p>
             </div>
-            <div class="stat-box" style="--primary: #dc2626;">
+            <div class="stat-box" style="--primary: #ef4444;">
                 <h4>ضمانات منتهية</h4>
                 <p id="stat-expired-count" style="color: var(--danger);">0</p>
             </div>
@@ -549,11 +543,11 @@
             <p id="save-status" style="margin-top: 14px; font-weight: 800; font-size: 15px; text-align: center;"></p>
         </div>
 
-        <!-- البحث والتزامن المباشر (بتصميم مميز جداً وبارز) -->
+        <!-- البحث والتزامن المباشر -->
         <div class="card search-highlight-card" id="search-card-wrapper">
             <h3>🔍 البحث السريع عن السجلات والفواتير</h3>
             <div class="form-group" style="margin-bottom: 0;">
-                <label style="color: #0369a1; font-size: 15px;">ابحث برقم الفاتورة، رقم السيارة، الموديل، أو نوع التصليح:</label>
+                <label style="color: #4338ca; font-size: 15px;">ابحث برقم الفاتورة، رقم السيارة، الموديل، أو نوع التصليح:</label>
                 <div class="search-box-wrapper">
                     <input type="text" id="searchCarNumber" placeholder="ابحث هنا عن أي سيارة أو فاتورة..." oninput="filterRecords()">
                     <span class="search-icon-abs">🔎</span>
@@ -674,7 +668,6 @@
     const dateInput = document.getElementById('maintenanceDateInput');
     if(dateInput) dateInput.value = todayStr;
 
-    // دالة إظهار وإخفاء حقول الفاتورة الجديدة
     window.toggleAddSection = function() {
         const card = document.getElementById('add-invoice-card');
         const btnText = document.getElementById('toggle-btn-text');
@@ -729,28 +722,16 @@
     }
 
     function updateStats(dataList) {
-        let totalRevenue = 0;
         let expiredCount = 0;
         const today = new Date();
 
         dataList.forEach(item => {
-            const cleanPrice = typeof item.repairPrice === 'string' ? item.repairPrice.replace(/,/g, '') : item.repairPrice;
-            totalRevenue += parseFloat(cleanPrice) || 0;
-            
-            if (item.returnsHistory && Array.isArray(item.returnsHistory)) {
-                item.returnsHistory.forEach(ret => {
-                    const cleanRetPrice = typeof ret.price === 'string' ? ret.price.replace(/,/g, '') : ret.price;
-                    totalRevenue += parseFloat(cleanRetPrice) || 0;
-                });
-            }
-
             const eDateObj = new Date(item.expiryDate);
             if (today > eDateObj) {
                 expiredCount++;
             }
         });
 
-        document.getElementById('stat-total-revenue').innerText = totalRevenue.toLocaleString() + " د.ع";
         document.getElementById('stat-total-count').innerText = dataList.length;
         document.getElementById('stat-expired-count').innerText = expiredCount;
     }
@@ -924,7 +905,7 @@
                     body {
                         font-family: 'Tajawal', Tahoma, sans-serif;
                         padding: 15px;
-                        color: #0f172a;
+                        color: #1e293b;
                         background: #fff;
                         direction: rtl;
                         text-align: right;
@@ -941,13 +922,13 @@
                     h2 {
                         text-align: center;
                         margin-bottom: 5px;
-                        color: #1e40af;
+                        color: #3730a3;
                         font-size: 20px;
                     }
                     .sub-title {
                         text-align: center;
                         font-size: 13px;
-                        color: #475569;
+                        color: #64748b;
                         margin-bottom: 15px;
                         border-bottom: 1px solid #cbd5e1;
                         padding-bottom: 8px;
@@ -965,17 +946,17 @@
                     }
                     .price-box {
                         margin-top: 15px;
-                        border-top: 2px solid #1e40af;
+                        border-top: 2px solid #3730a3;
                         padding-top: 12px;
                         text-align: center;
                         font-size: 17px;
                         font-weight: 900;
-                        color: #1e40af;
+                        color: #3730a3;
                     }
                     .footer-note {
                         text-align: center;
                         font-size: 12px;
-                        color: #475569;
+                        color: #64748b;
                         margin-top: 20px;
                         border-top: 1px dashed #cbd5e1;
                         padding-top: 10px;
